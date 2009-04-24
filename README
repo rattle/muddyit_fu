@@ -1,0 +1,83 @@
+= muddyit-fu
+
+== Getting started
+
+   You need to first get an account a muddy.it and create a site to hold content.
+
+== Installation
+
+  sudo gem install muddyit-fu
+
+== Example muddyit.yml
+
+---
+access_key_id: "YOUR KEY"
+secret_access_key: "YOUR SECRET"
+
+== Sites example
+
+  require 'muddyit_fu'
+  muddyit = Muddyit.new('muddyit.yml')
+  muddyit.sites.each do |site|
+    puts "#{site.label} : #{site.token}"
+  end
+
+== Categorisation request
+
+  require 'muddyit_fu'
+  muddyit = Muddyit.new('muddyit.yml')
+  site = muddyit.sites.first
+  site.pages.categorise(:identifier => 'http://news.bbc.co.uk/1/hi/uk_politics/8011321.stm')
+
+== View categorised pages
+
+  require 'muddyit_fu'
+  muddyit =  Muddyit.new(:access_key_id => 'aaaaaaaaaaaaaa',
+                         :secret_access_key => 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
+  site = muddyit.sites.first
+  site.pages.index do |page|
+    puts page.content_data.title
+    page.results.each do |result|
+      puts result.uri
+    end
+  end
+
+== View all pages containing 'Gordon Brown'
+
+  require 'muddyit_fu'
+  muddyit =  Muddyit.new(:access_key_id => 'aaaaaaaaaaaaaa',
+                         :secret_access_key => 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
+  site = muddyit.sites.first
+  site.pages.find_by_entity('http://dbpedia.org/resource/Gordon_Brown') do |page|
+    puts page.identifier
+  end
+
+== Find related entities for 'Gordon Brown'
+
+  require 'muddyit_fu'
+  muddyit =  Muddyit.new(:access_key_id => 'aaaaaaaaaaaaaa',
+                         :secret_access_key => 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
+  site = muddyit.sites.first
+  site.pages.related_entities('http://dbpedia.org/resource/Gordon_Brown').each do |entity|
+    puts "#{entity.uri} : #{entity.confidence}"
+  end
+
+== Find related content for : http://news.bbc.co.uk/1/hi/uk_politics/7878418.stm
+
+  require 'muddyit_fu'
+  muddyit =  Muddyit.new(:access_key_id => 'aaaaaaaaaaaaaa',
+                         :secret_access_key => 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
+  site = muddyit.sites.first
+  page = site.pages.find('http://news.bbc.co.uk/1/hi/uk_politics/7878418.stm')
+  puts "Our page : #{page.content_data.title}\n\n"
+  page.related_content.each do |results|
+    puts "#{results[:page].content_data.title} #{results[:count]}"
+  end
+
+
+== Contact
+
+  Author: Rob Lee
+  Email: robl [at] monkeyhelper.com
+  Main Repository: http://github.com/monkeyhelper/muddyit_fu/tree/master
+
