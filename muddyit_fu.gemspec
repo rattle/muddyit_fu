@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.summary  = "Provides a ruby interface to muddy.it via the REST api"
   s.email    = "robl at monkeyhelper.com"
   s.homepage = "http://github.com/monkeyhelper/muddyit_fu"
-  s.description = "Provides a ruby interface to flickr via the REST api"
+  s.description = "Provides a ruby interface to muddy.it via the REST api"
   s.has_rdoc = false
   s.authors  = ["Rob Lee"]
   s.files = Dir['lib/**/*.rb']
