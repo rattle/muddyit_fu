@@ -33,7 +33,7 @@ class Muddyit::Generic < Muddyit::Base
   #
   def method_missing(method, args = nil)
     if @info_added == false and !@attributes.has_key?(method.to_sym)
-      puts "Searching for missing method #{method.to_s}"
+      #puts "Searching for missing method #{method.to_s}"
       @attributes.merge!(self.fetch)
       @info_added = true
     end
