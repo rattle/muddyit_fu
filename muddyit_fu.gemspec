@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name     = "muddyit_fu"
-  s.version  = "0.0.1"
-  s.date     = "2009-04-14"
+  s.version  = "0.0.2"
+  s.date     = "2009-04-27"
   s.summary  = "Provides a ruby interface to muddy.it via the REST api"
   s.email    = "robl at monkeyhelper.com"
   s.homepage = "http://github.com/monkeyhelper/muddyit_fu"

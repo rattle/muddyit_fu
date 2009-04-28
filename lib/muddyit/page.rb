@@ -4,6 +4,7 @@ class Muddyit::Sites::Site::Page < Muddyit::Generic
   def initialize(muddyit, attributes = {})
     super(muddyit, attributes)
     create_entities
+    @content_data_cache = nil
   end
 
   # submit a page or text for re-categorisation
@@ -35,7 +36,10 @@ class Muddyit::Sites::Site::Page < Muddyit::Generic
   # get content_data for page
   #
   def content_data
-    Muddyit::Sites::Site::Page::ContentData.new(@muddyit, @attributes[:content_data])
+    if @content_data_cache.nil?
+      @content_data_cache = Muddyit::Sites::Site::Page::ContentData.new(@muddyit, @attributes[:content_data])
+    end
+    @content_data_cache
   end
 
   # delete the page

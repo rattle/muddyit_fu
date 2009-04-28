@@ -1,0 +1,14 @@
+muddyit_fu Changelog
+
+0.0.2
+
+- Added License
+- Added Changelog (!)
+- Moved back to using JSON for JRuby people
+- Improved content data terms data struct
+- Cached content data struct for a page object
+- Added a 'classification' method to entity to make up for type being an existing method
+
+0.0.1
+
+- First Release

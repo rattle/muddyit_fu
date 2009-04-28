@@ -76,8 +76,10 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
 
     # Ensure we have encoded the identifier and URI
     if options.has_key?(:uri)
+      raise if options[:uri].nil?
       options[:uri] = URI.escape(CGI.escape(options[:uri]),'.')
     elsif options.has_key?(:identifier)
+      raise if options[:identifier].nil?
       options[:identifier] = URI.escape(CGI.escape(options[:identifier]),'.')
     end
 
