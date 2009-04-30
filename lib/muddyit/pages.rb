@@ -49,14 +49,13 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
   #
   def related_entities(uri, options = {})
     raise "no uri supplied" if uri.nil?
-    options.merge!(:uri => uri)
-    api_url = "#{@muddyit.rest_endpoint}/sites/#{self.site.attributes[:token]}/pages/related/entities"
+    api_url = "#{@muddyit.rest_endpoint}/sites/#{self.site.attributes[:token]}/pages/related/entities/#{URI.escape(CGI.escape(uri),'.')}"
     response = @muddyit.send_request(api_url, :get, options)
 
     results = []
-    response.each_key { |result|
+    response.each { |result|
       # The return format needs sorting out here .......
-      results.push Muddyit::Entity.new(@muddyit, response[result].merge!(:uri => result))
+      results.push Muddyit::Entity.new(@muddyit, result)
     }
     return results
   end

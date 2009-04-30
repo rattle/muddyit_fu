@@ -61,9 +61,9 @@ class Muddyit::Sites::Site::Page < Muddyit::Generic
     response = @muddyit.send_request(api_url, :get, options)
     
     results = []
-    response.each_key { |result|
+    response.each { |result|
       # The return format needs sorting out here .......
-      results.push :page => @attributes[:site].pages.find(result.to_s), :count => response[result]['count']
+      results.push :page => @attributes[:site].pages.find(result['identifier']), :count => result['count']
     }
     return results
   end
