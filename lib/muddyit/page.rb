@@ -37,11 +37,17 @@ class Muddyit::Sites::Site::Page < Muddyit::Generic
   #
   def content_data
     if @content_data_cache.nil?
-      @content_data_cache = Muddyit::Sites::Site::Page::ContentData.new(@muddyit, @attributes[:content_data])
+      if @attributes[:content_data]
+        @content_data_cache = Muddyit::Sites::Site::Page::ContentData.new(@muddyit, @attributes[:content_data])
+      else
+        r = self.fetch
+        @content_data_cache = Muddyit::Sites::Site::Page::ContentData.new(@muddyit, r[:content_data])
+      end
     end
     @content_data_cache
   end
 
+  
   # delete the page
   #
   def destroy

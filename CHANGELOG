@@ -1,5 +1,13 @@
 muddyit_fu Changelog
 
+0.0.4
+- Fixed content_data bug when attributes hadn't been requested
+- Added proper dbpedia entity support for Entity class
+
+0.0.3
+- Updated License
+- Modified related and related_content functionality for pages to match muddy server API changes
+
 0.0.2
 
 - Added License

@@ -42,7 +42,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
     end
   end
 
-  # retrieve entities related to this page
+  # retrieve entities related to the specified entity within the site pages collection
   #
   # Params
   # * options (Optional)
