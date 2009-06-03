@@ -2,13 +2,13 @@
 
 == Installation
 
-  sudo gem install muddyit-fu
+sudo gem install muddyit-fu
 
 == Example muddyit.yml
 
----
-access_key_id: "YOUR KEY"
-secret_access_key: "YOUR SECRET"
+  ---
+  access_key_id: "YOUR KEY"
+  secret_access_key: "YOUR SECRET"
 
 == Sites example
 
