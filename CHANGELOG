@@ -1,7 +1,7 @@
 muddyit_fu Changelog
 
 0.1.0
-- Moved to using Jeweller for gem management
+- Moved to using Jeweller for gem management, should fix previously empty gems
 
 0.0.4
 - Fixed content_data bug when attributes hadn't been requested
