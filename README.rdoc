@@ -1,9 +1,5 @@
 = muddyit-fu
 
-== Getting started
-
-   You need to first get an account a muddy.it and create a site to hold content.
-
 == Installation
 
   sudo gem install muddyit-fu
