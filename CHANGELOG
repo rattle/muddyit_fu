@@ -1,5 +1,8 @@
 muddyit_fu Changelog
 
+0.1.0
+- Moved to using Jeweller for gem management
+
 0.0.4
 - Fixed content_data bug when attributes hadn't been requested
 - Added proper dbpedia entity support for Entity class
