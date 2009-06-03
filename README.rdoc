@@ -1,4 +1,4 @@
-= muddyit-fu
+= muddyit_fu
 
 == Installation
 
