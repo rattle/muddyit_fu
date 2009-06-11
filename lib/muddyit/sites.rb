@@ -24,7 +24,7 @@ class Muddyit::Sites < Muddyit::Base
     if type.is_a? Symbol
       case type
       when :all
-        api_url = "#{@muddyit.rest_endpoint}/sites/"
+        api_url = "/sites/"
         response = @muddyit.send_request(api_url, :get, options)
         sites = []
         response.each { |site| sites.push Muddyit::Sites::Site.new(@muddyit, site['site']) }
@@ -33,7 +33,7 @@ class Muddyit::Sites < Muddyit::Base
         raise 'invalid type specified'
       end
     elsif type.is_a? String
-      api_url = "#{@muddyit.rest_endpoint}/sites/#{type}"
+      api_url = "/sites/#{type}"
       response = @muddyit.send_request(api_url, :get, options)
       return Muddyit::Sites::Site.new(@muddyit, response['site'])
     else

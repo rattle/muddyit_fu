@@ -17,18 +17,13 @@ class Muddyit::Sites::Site::Page < Muddyit::Generic
     # Ensure we get content_data as well
     options[:include_content] = true unless options.has_key?(:include_content)
 
-    # Set the URI if not set
-    options[:uri] = options[:identifier] if options.has_key?(:identifier) && !options.has_key?(:uri) && !options.has_key?(:text)
+    body = { :categorise => { :options => {}} }
+    body[:categorise][:options].merge!(options)
 
-    # Ensure we have encoded the identifier and URI
-    if options.has_key?(:uri)
-      options[:uri] = URI.escape(CGI.escape(options[:uri]),'.')
-    elsif options.has_key?(:identifier)
-      options[:identifier] = URI.escape(CGI.escape(options[:identifier]),'.')
-    end
+    opts = { :uri => self.uri }
 
-    api_url = "#{@muddyit.rest_endpoint}/sites/#{self.site.attributes[:token]}/pages/#{URI.escape(CGI.escape(@attributes[:identifier]),'.')}/refresh"
-    response = @muddyit.send_request(api_url, :post, options)
+    api_url = "/sites/#{self.site.attributes[:token]}/pages/#{URI.escape(CGI.escape(self.identifier),'.')}/refresh"
+    response = @muddyit.send_request(api_url, :post, opts, body.to_json)
     return Muddyit::Sites::Site::Page.new(@muddyit, response.merge!(:site => self.site))
   end
 
@@ -51,7 +46,7 @@ class Muddyit::Sites::Site::Page < Muddyit::Generic
   # delete the page
   #
   def destroy
-    api_url = "#{@muddyit.rest_endpoint}/sites/#{self.site.attributes[:token]}/pages/#{URI.escape(CGI.escape(@attributes[:identifier]),'.')}"
+    api_url = "/sites/#{self.site.attributes[:token]}/pages/#{URI.escape(CGI.escape(@attributes[:identifier]),'.')}"
     response = @muddyit.send_request(api_url, :delete, {})
     # Is this the correct thing to return ?
     return true
@@ -63,7 +58,7 @@ class Muddyit::Sites::Site::Page < Muddyit::Generic
   # * options (Optional)
   #
   def related_content(options = {})
-    api_url = "#{@muddyit.rest_endpoint}/sites/#{self.site.attributes[:token]}/pages/#{URI.escape(CGI.escape(@attributes[:identifier]),'.')}/related/content"
+    api_url = "/sites/#{self.site.attributes[:token]}/pages/#{URI.escape(CGI.escape(@attributes[:identifier]),'.')}/related/content"
     response = @muddyit.send_request(api_url, :get, options)
     
     results = []
@@ -76,7 +71,7 @@ class Muddyit::Sites::Site::Page < Muddyit::Generic
 
   protected
   def fetch
-    api_url = "#{@muddyit.rest_endpoint}/sites/#{self.site.attributes[:token]}/pages/#{URI.escape(CGI.escape(@attributes[:identifier]),'.')}"
+    api_url = "/sites/#{self.site.attributes[:token]}/pages/#{URI.escape(CGI.escape(@attributes[:identifier]),'.')}"
     response = @muddyit.send_request(api_url, :get, {:include_content => true })
     response.nested_symbolize_keys!
   end

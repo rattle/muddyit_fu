@@ -10,7 +10,7 @@ class Muddyit::Entity < Muddyit::Generic
 
   protected
   def fetch
-    api_url = "#{@muddyit.rest_endpoint}/entities/#{URI.escape(CGI.escape(@attributes[:uri]),'.')}"
+    api_url = "/entities/#{URI.escape(CGI.escape(@attributes[:uri]),'.')}"
     response = @muddyit.send_request(api_url, :get)
     response.nested_symbolize_keys!
   end

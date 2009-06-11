@@ -12,7 +12,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
     if type.is_a? Symbol
       case type
       when :all
-        api_url = "#{@muddyit.rest_endpoint}/sites/#{self.site.attributes[:token]}/pages"
+        api_url = "/sites/#{self.site.attributes[:token]}/pages"
         if block_given?
           token = nil
           begin
@@ -24,7 +24,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
           # Need to figure out which of the below actually occurs
           end while !token.nil? || !token == ''
         else
-          api_url = "#{@muddyit.rest_endpoint}/sites/#{self.site.attributes[:token]}/pages"
+          api_url = "/sites/#{self.site.attributes[:token]}/pages"
           response = @muddyit.send_request(api_url, :get, options)
 
           pages = []
@@ -36,7 +36,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
       end
 
     elsif type.is_a? String
-      api_url = "#{@muddyit.rest_endpoint}/sites/#{self.site.attributes[:token]}/pages/#{URI.escape(CGI.escape(type),'.')}"
+      api_url = "/sites/#{self.site.attributes[:token]}/pages/#{URI.escape(CGI.escape(type),'.')}"
       response = @muddyit.send_request(api_url, :get, {})
       response.has_key?('results') ? Muddyit::Sites::Site::Page.new(@muddyit, response.merge!(:site => self.site)) : nil
     end
@@ -49,7 +49,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
   #
   def related_entities(uri, options = {})
     raise "no uri supplied" if uri.nil?
-    api_url = "#{@muddyit.rest_endpoint}/sites/#{self.site.attributes[:token]}/pages/related/entities/#{URI.escape(CGI.escape(uri),'.')}"
+    api_url = "/sites/#{self.site.attributes[:token]}/pages/related/entities/#{URI.escape(CGI.escape(uri),'.')}"
     response = @muddyit.send_request(api_url, :get, options)
 
     results = []
@@ -65,25 +65,26 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
   # Params
   # * options (Required)
   #
-  def categorise(options)
+  def categorise(uri, doc = {}, options = {})
 
     # Ensure we get content_data as well
     options[:include_content] = true
 
-    # Set the URI if not set
-    options[:uri] = options[:identifier] if options.has_key?(:identifier) && !options.has_key?(:uri) && !options.has_key?(:text)
-
     # Ensure we have encoded the identifier and URI
-    if options.has_key?(:uri)
-      raise if options[:uri].nil?
-      options[:uri] = URI.escape(CGI.escape(options[:uri]),'.')
-    elsif options.has_key?(:identifier)
-      raise if options[:identifier].nil?
-      options[:identifier] = URI.escape(CGI.escape(options[:identifier]),'.')
+    if uri
+      raise if uri.nil?
+      uri = URI.escape(CGI.escape(uri),'.')
     end
+    options[:identifier] = URI.escape(CGI.escape(options[:identifier]),'.')  if options.has_key?(:identifier)
 
-    api_url = "#{@muddyit.rest_endpoint}/sites/#{self.site.attributes[:token]}/pages/categorise"
-    response = @muddyit.send_request(api_url, :post, options)
+    body = { :categorise => { :options => {}} }
+    body[:categorise][:uri] = uri if uri
+    #body[:categorise][:identifier] =  (!doc.has_key?(:identifier) && !doc.has_key?(:text)) ? uri : doc.delete(:identifier)
+    body[:categorise].merge!(doc)
+    body[:categorise][:options] = options
+
+    api_url = "/sites/#{self.site.attributes[:token]}/pages/categorise"
+    response = @muddyit.send_request(api_url, :post, options, body.to_json)
     return Muddyit::Sites::Site::Page.new(@muddyit, response.merge!(:site => self.site))
   end
 
@@ -146,7 +147,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
   #     must contain uri parameter which corresponds to dbpedia uri
   #
   def queryAllWithURI(uri, options, &block)
-    api_url = "#{@muddyit.rest_endpoint}/sites/#{self.site.attributes[:token]}/pages/withentities/#{URI.escape(CGI.escape(uri),'.')}"
+    api_url = "/sites/#{self.site.attributes[:token]}/pages/withentities/#{URI.escape(CGI.escape(uri),'.')}"
     query_page(api_url, options, &block)
   end
 
@@ -159,7 +160,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
   #
   #
   def queryAllWithTerm(term, options, &block)
-    api_url = "#{@muddyit.rest_endpoint}/sites/#{self.site.attributes[:token]}/pages/withterms/#{URI.escape(CGI.escape(term),'.')}"
+    api_url = "/sites/#{self.site.attributes[:token]}/pages/withterms/#{URI.escape(CGI.escape(term),'.')}"
     query_page(api_url, options, &block)
   end
 
@@ -174,7 +175,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
       token = nil
       begin
         options.merge!(:page => token) unless token.nil?
-        response = @muddyit.send_request(api_url, :get, options)
+        response = @muddyit.send_request(api_url, :get, options.merge!(:page => token))
         response['resultsets'].each { |page|
           yield Muddyit::Sites::Site::Page.new(@muddyit, page.merge!(:site => self.site))
         }

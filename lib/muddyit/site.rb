@@ -6,7 +6,7 @@ class Muddyit::Sites::Site < Muddyit::Generic
   
   protected
   def fetch
-    api_url = "#{@muddyit.rest_endpoint}/sites/#{@attributes[:token]}"
+    api_url = "/sites/#{@attributes[:token]}"
     response = @muddyit.send_request(api_url, :get, {})
     response['site'].nested_symbolize_keys!
   end
