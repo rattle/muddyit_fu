@@ -84,7 +84,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
     body[:categorise][:options] = options
 
     api_url = "/sites/#{self.site.attributes[:token]}/pages/categorise"
-    response = @muddyit.send_request(api_url, :post, options, body.to_json)
+    response = @muddyit.send_request(api_url, :post, {}, body.to_json)
     return Muddyit::Sites::Site::Page.new(@muddyit, response.merge!(:site => self.site))
   end
 

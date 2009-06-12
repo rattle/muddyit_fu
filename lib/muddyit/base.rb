@@ -85,10 +85,8 @@ module Muddyit
     def send_request(api_url, http_method = :get, opts = {}, body = nil)
 
       raise 'no api_url supplied' unless api_url
-
       res = request_over_http(api_url, http_method, opts, body)
       # Strip any js wrapping methods
-      puts res.body
       if res.body =~ /^.+\((.+)\)$/
         r = JSON.parse($1)
       else

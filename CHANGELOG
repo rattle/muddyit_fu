@@ -1,5 +1,8 @@
 muddyit_fu Changelog
 
+0.2.0
+- Added new oauth style authentication method
+
 0.1.0
 - Moved to using Jeweller for gem management, should fix previously empty gems
 

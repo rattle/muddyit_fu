@@ -4,13 +4,31 @@
 
 sudo gem install muddyit-fu
 
+== Getting started
+
+muddy.it uses oauth to manage it's api access.  On signup, the service will
+automatically create an oauth consumer with an access token that you can use
+to access the service programmatically.  To find your access details, login and
+visit :
+
+http://www.muddy.it/oauth_clients/
+
+Click 'muddy' and collect the 'consumer key' and 'consumer secret' details along
+with the 'access token' and 'access token secret' for one of the associated access
+tokens.
+
+These details are then used to provide access to the service.  The credentials
+can be stored in a yml file, an example of which is provided below.
+
 == Example muddyit.yml
 
   ---
-  access_key_id: "YOUR KEY"
-  secret_access_key: "YOUR SECRET"
+  consumer_key: "YOUR_CONSUMER_KEY"
+  consumer_secret: "YOUR_CONSUMER_SECRET"
+  access_token: "YOUR_ACCESS_TOKEN"
+  access_token_secret: "YOUR_ACCESS_TOKEN_SECRET"
 
-== Sites example
+== Retrieving a site
 
   require 'muddyit_fu'
   muddyit = Muddyit.new('muddyit.yml')
@@ -28,8 +46,10 @@ sudo gem install muddyit-fu
 == View categorised pages
 
   require 'muddyit_fu'
-  muddyit =  Muddyit.new(:access_key_id => 'aaaaaaaaaaaaaa',
-                         :secret_access_key => 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
+  muddyit =  Muddyit.new(:consumer_key => 'aaa',
+                         :consumer_secret => 'bbb',
+                         :access_token => 'ccc',
+                         :access_token_secret => 'ddd')
   site = muddyit.sites.first
   site.pages.index do |page|
     puts page.content_data.title
@@ -41,8 +61,7 @@ sudo gem install muddyit-fu
 == View all pages containing 'Gordon Brown'
 
   require 'muddyit_fu'
-  muddyit =  Muddyit.new(:access_key_id => 'aaaaaaaaaaaaaa',
-                         :secret_access_key => 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
+  muddyit = Muddyit.new('muddyit.yml')
   site = muddyit.sites.first
   site.pages.find_by_entity('http://dbpedia.org/resource/Gordon_Brown') do |page|
     puts page.identifier
@@ -51,8 +70,7 @@ sudo gem install muddyit-fu
 == Find related entities for 'Gordon Brown'
 
   require 'muddyit_fu'
-  muddyit =  Muddyit.new(:access_key_id => 'aaaaaaaaaaaaaa',
-                         :secret_access_key => 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
+  muddyit = Muddyit.new('muddyit.yml')
   site = muddyit.sites.first
   site.pages.related_entities('http://dbpedia.org/resource/Gordon_Brown').each do |entity|
     puts "#{entity.uri} : #{entity.confidence}"
@@ -61,8 +79,7 @@ sudo gem install muddyit-fu
 == Find related content for : http://news.bbc.co.uk/1/hi/uk_politics/7878418.stm
 
   require 'muddyit_fu'
-  muddyit =  Muddyit.new(:access_key_id => 'aaaaaaaaaaaaaa',
-                         :secret_access_key => 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
+  muddyit = Muddyit.new('muddyit.yml')
   site = muddyit.sites.first
   page = site.pages.find('http://news.bbc.co.uk/1/hi/uk_politics/7878418.stm')
   puts "Our page : #{page.content_data.title}\n\n"
@@ -70,6 +87,21 @@ sudo gem install muddyit-fu
     puts "#{results[:page].content_data.title} #{results[:count]}"
   end
 
+== Authorising an application for access to muddy.it
+
+In order to authorise an application for access to muddy, it needs to be registered
+as a consumer.  Login and visit the oauth registration page :
+
+http://staging.muddy.it/oauth_clients
+
+Click 'register your application', fill in the details as provided from your
+providers site.
+
+The 'consumer token' and 'consumer secret' are used to generate a token for
+accessing muddy.it.  For further details and an example of how to programatically
+generate a new access token for muddy.it see here :
+
+http://stakeventures.com/articles/2008/02/23/developing-oauth-clients-in-ruby
 
 == Contact
 
