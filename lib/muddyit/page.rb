@@ -15,15 +15,12 @@ class Muddyit::Sites::Site::Page < Muddyit::Generic
   def refresh(options)
 
     # Ensure we get content_data as well
-    options[:include_content] = true unless options.has_key?(:include_content)
+    options[:include_content] = true
 
-    body = { :categorise => { :options => {}} }
-    body[:categorise][:options].merge!(options)
+    body = { :page => { :uri => self.uri }, :options => options }
 
-    opts = { :uri => self.uri }
-
-    api_url = "/sites/#{self.site.attributes[:token]}/pages/#{URI.escape(CGI.escape(self.identifier),'.')}/refresh"
-    response = @muddyit.send_request(api_url, :post, opts, body.to_json)
+    api_url = "/sites/#{self.site.attributes[:token]}/pages/#{URI.escape(CGI.escape(self.identifier),'.')}/"
+    response = @muddyit.send_request(api_url, :post, {}, body.to_json)
     return Muddyit::Sites::Site::Page.new(@muddyit, response.merge!(:site => self.site))
   end
 

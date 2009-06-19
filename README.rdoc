@@ -41,7 +41,7 @@ can be stored in a yml file, an example of which is provided below.
   require 'muddyit_fu'
   muddyit = Muddyit.new('muddyit.yml')
   site = muddyit.sites.first
-  site.pages.categorise(:identifier => 'http://news.bbc.co.uk/1/hi/uk_politics/8011321.stm')
+  site.pages.categorise({:identifier => 'http://news.bbc.co.uk/1/hi/uk_politics/8011321.stm'}, {:minium_confidence => 0.2})
 
 == View categorised pages
 
