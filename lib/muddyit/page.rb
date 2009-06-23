@@ -12,7 +12,7 @@ class Muddyit::Sites::Site::Page < Muddyit::Generic
   # Params
   # * options (Required)
   #
-  def refresh(options)
+  def refresh(options = {})
 
     # Ensure we get content_data as well
     options[:include_content] = true
@@ -57,7 +57,6 @@ class Muddyit::Sites::Site::Page < Muddyit::Generic
   def related_content(options = {})
     api_url = "/sites/#{self.site.attributes[:token]}/pages/#{URI.escape(CGI.escape(@attributes[:identifier]),'.')}/related/content"
     response = @muddyit.send_request(api_url, :get, options)
-    
     results = []
     response.each { |result|
       # The return format needs sorting out here .......
@@ -76,11 +75,11 @@ class Muddyit::Sites::Site::Page < Muddyit::Generic
   # Convert results to entities
   def create_entities
     results = []
-    if @attributes.has_key?(:results)
-      @attributes[:results].each do |result|
+    if @attributes.has_key?(:entities)
+      @attributes[:entities].each do |result|
          results.push Muddyit::Entity.new(@muddyit, result)
       end
-      @attributes[:results] = results
+      @attributes[:entities] = results
     end
   end
 

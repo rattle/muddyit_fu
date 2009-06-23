@@ -38,7 +38,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
     elsif type.is_a? String
       api_url = "/sites/#{self.site.attributes[:token]}/pages/#{URI.escape(CGI.escape(type),'.')}"
       response = @muddyit.send_request(api_url, :get, {})
-      response.has_key?('page') ? Muddyit::Sites::Site::Page.new(@muddyit, response.merge!(:site => self.site)) : nil
+      response.has_key?('identifier') ? Muddyit::Sites::Site::Page.new(@muddyit, response.merge!(:site => self.site)) : nil
     end
   end
 
