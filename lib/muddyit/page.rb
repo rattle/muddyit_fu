@@ -19,8 +19,8 @@ class Muddyit::Sites::Site::Page < Muddyit::Generic
 
     body = { :page => { :uri => self.uri }, :options => options }
 
-    api_url = "/sites/#{self.site.attributes[:token]}/pages/#{URI.escape(CGI.escape(self.identifier),'.')}/"
-    response = @muddyit.send_request(api_url, :post, {}, body.to_json)
+    api_url = "/sites/#{self.site.attributes[:token]}/pages/#{URI.escape(CGI.escape(self.identifier),'.')}"
+    response = @muddyit.send_request(api_url, :put, {}, body.to_json)
     return Muddyit::Sites::Site::Page.new(@muddyit, response.merge!(:site => self.site))
   end
 
