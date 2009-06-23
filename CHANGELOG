@@ -1,5 +1,8 @@
 muddyit_fu Changelog
 
+0.2.1
+- Updated to reflect new api
+
 0.2.0
 - Added new oauth style authentication method
 
