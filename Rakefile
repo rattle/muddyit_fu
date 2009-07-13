@@ -10,7 +10,7 @@ begin
     gem.homepage = "http://github.com/monkeyhelper/muddyit_fu"
     gem.authors = ["robl"]
     gem.add_dependency('json', '>= 0.0.0')
-    gem.add_dependency('oauth', '>= 0.0.0')
+#    gem.add_dependency('oauth', '>= 0.0.0')
 
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end

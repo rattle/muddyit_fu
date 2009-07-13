@@ -3,6 +3,7 @@ require 'net/http'
 require 'cgi'
 require 'json'
 #require 'json/ext'
+#gem 'monkeyhelper-oauth', :lib => 'lib/oauth'
 require 'oauth/consumer'
 
 require 'pp'
@@ -44,7 +45,7 @@ class Hash
 end
 
 # base must load first
-%w(base errors generic sites entity site pages page content_data).each do |file|
+%w(base errors generic sites entity sites/site sites/pages sites/pages/page sites/pages/page/content_data sites/entities sites/entities/entity).each do |file|
   require File.join(File.dirname(__FILE__), 'muddyit', file)
 end
 

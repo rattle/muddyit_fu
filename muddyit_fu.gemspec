@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["robl"]
-  s.date = %q{2009-06-23}
+  s.date = %q{2009-07-13}
   s.email = %q{robl[at]monkeyhelper.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -20,13 +20,9 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "lib/muddyit/base.rb",
-     "lib/muddyit/content_data.rb",
      "lib/muddyit/entity.rb",
      "lib/muddyit/errors.rb",
      "lib/muddyit/generic.rb",
-     "lib/muddyit/page.rb",
-     "lib/muddyit/pages.rb",
-     "lib/muddyit/site.rb",
      "lib/muddyit/sites.rb",
      "lib/muddyit_fu.rb",
      "muddyit_fu.gemspec"
@@ -43,13 +39,10 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<json>, [">= 0.0.0"])
-      s.add_runtime_dependency(%q<oauth>, [">= 0.0.0"])
     else
       s.add_dependency(%q<json>, [">= 0.0.0"])
-      s.add_dependency(%q<oauth>, [">= 0.0.0"])
     end
   else
     s.add_dependency(%q<json>, [">= 0.0.0"])
-    s.add_dependency(%q<oauth>, [">= 0.0.0"])
   end
 end
