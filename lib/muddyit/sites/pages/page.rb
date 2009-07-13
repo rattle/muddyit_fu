@@ -1,4 +1,4 @@
-class Muddyit::Sites::Sites::Pages::Page < Muddyit::Generic
+class Muddyit::Sites::Site::Pages::Page < Muddyit::Generic
 
   # Create a set of entities from the categorisation results
   def initialize(muddyit, attributes = {})
@@ -79,7 +79,7 @@ class Muddyit::Sites::Sites::Pages::Page < Muddyit::Generic
     results = []
     if @attributes.has_key?(:entities)
       @attributes[:entities].each do |result|
-         results.push Muddyit::Entity.new(@muddyit, result)
+         results.push Muddyit::Entities::Entity.new(@muddyit, result)
       end
       @attributes[:entities] = results
     end

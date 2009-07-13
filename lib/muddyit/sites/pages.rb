@@ -18,7 +18,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
           begin
           response = @muddyit.send_request(api_url, :get, options.merge!(:page => token))
           response['pages'].each { |page|
-            yield Muddyit::Sites::Sites::Pages::Page.new(@muddyit, page.merge!(:site => self.site))
+            yield Muddyit::Sites::Site::Pages::Page.new(@muddyit, page.merge!(:site => self.site))
           }
           token = response['next_page']
           # Need to figure out which of the below actually occurs
@@ -28,7 +28,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
           response = @muddyit.send_request(api_url, :get, options)
 
           pages = []
-          response['pages'].each { |page| pages.push Muddyit::Sites::Sites::Pages::Page.new(@muddyit, page.merge!(:site => self.site)) }
+          response['pages'].each { |page| pages.push Muddyit::Sites::Site::Pages::Page.new(@muddyit, page.merge!(:site => self.site)) }
           return { :next_page => response['next_page'], :pages => pages }
         end
       else
@@ -38,7 +38,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
     elsif type.is_a? String
       api_url = "/sites/#{self.site.attributes[:token]}/pages/#{type}"
       response = @muddyit.send_request(api_url, :get, {})
-      response.has_key?('identifier') ? Muddyit::Sites::Sites::Pages::Page.new(@muddyit, response.merge!(:site => self.site)) : nil
+      response.has_key?('identifier') ? Muddyit::Sites::Site::Pages::Page.new(@muddyit, response.merge!(:site => self.site)) : nil
     end
   end
 
@@ -79,7 +79,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
 
     api_url = "/sites/#{self.site.attributes[:token]}/pages/"
     response = @muddyit.send_request(api_url, :post, {}, body.to_json)
-    return Muddyit::Sites::Sites::Pages::Page.new(@muddyit, response['page'].merge!(:site => self.site))
+    return Muddyit::Sites::Site::Pages::Page.new(@muddyit, response['page'].merge!(:site => self.site))
   end
 
   # find all pages with specified entity
@@ -171,7 +171,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
         options.merge!(:page => token) unless token.nil?
         response = @muddyit.send_request(api_url, :get, options.merge!(:page => token))
         response['pages'].each { |page|
-          yield Muddyit::Sites::Sites::Pages::Page.new(@muddyit, page.merge!(:site => self.site))
+          yield Muddyit::Sites::Site::Pages::Page.new(@muddyit, page.merge!(:site => self.site))
         }
         token = response['next_page']
         # Need to figure out which of the below actually occurs
@@ -180,7 +180,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
       response = @muddyit.send_request(api_url, :get, {})
 
       pages = []
-      response['pages'].each { |page| pages.push Muddyit::Sites::Sites::Pages::Page.new(@muddyit, page.merge!(:site => self.site)) }
+      response['pages'].each { |page| pages.push Muddyit::Sites::Site::Pages::Page.new(@muddyit, page.merge!(:site => self.site)) }
       return { :next_page => response[:next_page], :pages => pages }
     end    
   end

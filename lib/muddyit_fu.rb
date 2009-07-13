@@ -5,6 +5,7 @@ require 'json'
 #require 'json/ext'
 #gem 'monkeyhelper-oauth', :lib => 'lib/oauth'
 require 'oauth/consumer'
+require 'digest/md5'
 
 require 'pp'
 
