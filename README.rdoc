@@ -56,7 +56,7 @@ can be stored in a yml file, an example of which is provided below.
                          :access_token_secret => 'ddd')
   site = muddyit.sites.first
   site.pages.index do |page|
-    puts page.content_data.title
+    puts page.title
     page.results.each do |result|
       puts result.uri
     end
@@ -86,9 +86,9 @@ can be stored in a yml file, an example of which is provided below.
   muddyit = Muddyit.new('muddyit.yml')
   site = muddyit.sites.first
   page = site.pages.find('http://news.bbc.co.uk/1/hi/uk_politics/7878418.stm')
-  puts "Our page : #{page.content_data.title}\n\n"
+  puts "Our page : #{page.title}\n\n"
   page.related_content.each do |results|
-    puts "#{results[:page].content_data.title} #{results[:count]}"
+    puts "#{results[:page].title} #{results[:count]}"
   end
 
 == Authorising clients using irb
