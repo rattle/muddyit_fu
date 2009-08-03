@@ -30,7 +30,8 @@ Gem::Specification.new do |s|
      "lib/muddyit/sites/pages/page.rb",
      "lib/muddyit/sites/pages/page/extracted_content.rb",
      "lib/muddyit/sites/site.rb",
-     "lib/muddyit_fu.rb"
+     "lib/muddyit_fu.rb",
+     "muddyit_fu.gemspec"
   ]
   s.homepage = %q{http://github.com/monkeyhelper/muddyit_fu}
   s.rdoc_options = ["--charset=UTF-8"]
