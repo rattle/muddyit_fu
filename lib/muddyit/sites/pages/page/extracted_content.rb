@@ -1,4 +1,4 @@
-class Muddyit::Sites::Site::Pages::Page::ContentData < Muddyit::Generic
+class Muddyit::Sites::Site::Pages::Page::ExtractedContent < Muddyit::Generic
 
   def initialize(muddyit, attributes)
     super(muddyit, attributes)

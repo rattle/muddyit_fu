@@ -76,7 +76,7 @@ can be stored in a yml file, an example of which is provided below.
   require 'muddyit_fu'
   muddyit = Muddyit.new('muddyit.yml')
   site = muddyit.sites.first
-  site.pages.related_entities('http://dbpedia.org/resource/Gordon_Brown').each do |entity|
+  site.entities.related('http://dbpedia.org/resource/Gordon_Brown').each do |entity|
     puts "#{entity.uri} : #{entity.confidence}"
   end
 

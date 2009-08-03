@@ -42,23 +42,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
     end
   end
 
-  # retrieve entities related to the specified entity within the site pages collection
-  #
-  # Params
-  # * options (Optional)
-  #
-#  def related_entities(uri, options = {})
-#    raise "no uri supplied" if uri.nil?
-#    api_url = "/sites/#{self.site.attributes[:token]}/related/entities/#{URI.escape(CGI.escape(uri),'.')}"
-#    response = @muddyit.send_request(api_url, :get, options)
-#
-#    results = []
-#    response.each { |result|
-#      # The return format needs sorting out here .......
-#      results.push Muddyit::Entity.new(@muddyit, result)
-#    }
-#    return results
-#  end
+
 
   # submit a page or text for categorisation
   #
@@ -140,10 +124,10 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
   # * options (Required)
   #     must contain uri parameter which corresponds to dbpedia uri
   #
-#  def queryAllWithURI(uri, options, &block)
-#    api_url = "/sites/#{self.site.attributes[:token]}/entities/#{URI.escape(CGI.escape(uri),'.')}"
-#    query_page(api_url, options, &block)
-#  end
+  def queryAllWithURI(uri, options, &block)
+    api_url = "/sites/#{self.site.attributes[:token]}/entities/#{Digest::MD5.hexdigest(URI.encode(uri))}"
+    query_page(api_url, options, &block)
+  end
 
   # find all pages with specified term(s)
   #

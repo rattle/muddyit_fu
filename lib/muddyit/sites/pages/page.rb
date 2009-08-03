@@ -4,7 +4,7 @@ class Muddyit::Sites::Site::Pages::Page < Muddyit::Generic
   def initialize(muddyit, attributes = {})
     super(muddyit, attributes)
     create_entities
-    @content_data_cache = nil
+    @extracted_content_cache = nil
   end
 
   # submit a page or text for re-categorisation
@@ -14,7 +14,7 @@ class Muddyit::Sites::Site::Pages::Page < Muddyit::Generic
   #
   def update(options = {})
 
-    # Ensure we get content_data as well
+    # Ensure we get extracted_content as well
     options[:include_content] = true
 
     body = { :page => { :uri => self.uri }, :options => options }
@@ -25,18 +25,18 @@ class Muddyit::Sites::Site::Pages::Page < Muddyit::Generic
   end
 
 
-  # get content_data for page
+  # get extracted_content for page
   #
-  def content_data
-    if @content_data_cache.nil?
-      if @attributes[:content_data]
-        @content_data_cache = Muddyit::Sites::Site::Pages::Page::ContentData.new(@muddyit, @attributes[:content_data])
+  def extracted_content
+    if @extracted_content_cache.nil?
+      if @attributes[:extracted_content]
+        @extracted_content_cache = Muddyit::Sites::Site::Pages::Page::ExtractedContent.new(@muddyit, @attributes[:extracted_content])
       else
         r = self.fetch
-        @content_data_cache = Muddyit::Sites::Site::Pages::Page::ContentData.new(@muddyit, r[:content_data])
+        @extracted_content_cache = Muddyit::Sites::Site::Pages::Page::ExtractedContent.new(@muddyit, r[:extracted_content])
       end
     end
-    @content_data_cache
+    @extracted_content_cache
   end
 
   
@@ -79,7 +79,7 @@ class Muddyit::Sites::Site::Pages::Page < Muddyit::Generic
     results = []
     if @attributes.has_key?(:entities)
       @attributes[:entities].each do |result|
-         results.push Muddyit::Entities::Entity.new(@muddyit, result)
+         results.push Muddyit::Sites::Site::Entities::Entity.new(@muddyit, result)
       end
       @attributes[:entities] = results
     end
