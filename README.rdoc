@@ -93,54 +93,7 @@ can be stored in a yml file, an example of which is provided below.
 
 == Authorising clients using irb
 
-  robl@fry:~/$ irb
-  irb(main):002:0> require 'rubygems'
-  => true
-  irb(main):003:0> require 'oauth'
-  => true
-  irb(main):004:0> require 'oauth/consumer'
-  => false
-  irb(main):005:0> @consumer=OAuth::Consumer.new "yourtoken", "yoursecret", {:site => 'http://www.muddy.it' }
-  => #<OAuth::Consumer:0xb7683b7c @key="yourtoken", @secret="yoursecret", @options={:oauth_version=>"1.0",
-  :signature_method=>"HMAC-SHA1", :request_token_path=>"/oauth/request_token",
-  :site=>"http://www.muddy.it", :scheme=>:header,
-  :authorize_path=>"/oauth/authorize", :access_token_path=>"/oauth/access_token",
-  :http_method=>:post}>
-  irb(main):006:0> @request_token=@consumer.get_request_token
-  => #<OAuth::RequestToken:0xb76778e0 @consumer=#<OAuth::Consumer:0xb7683b7c @key="tokenkey",
-  @http=#<Net::HTTP www.muddy.it:80 open=false>, @http_method=:post,
-  @secret="tokensecret", @options={:oauth_version=>"1.0", :signature_method=>"HMAC-SHA1",
-  :request_token_path=>"/oauth/request_token", :site=>"http://www.muddy.it",
-  :scheme=>:header, :authorize_path=>"/oauth/authorize", :access_token_path=>"/oauth/access_token",
-  :http_method=>:post}>, @token="tokenkey", @secret="tokensecret">
-  irb(main):007:0> @request_token.authorize_url
-  => "http://www.muddy.it/oauth/authorize?oauth_token=tokenkey"
-
-To authorise the application, visit the URL, check the 'authorize access' box and
-save.  The request token can now be exchanged for an access token :
-
-  irb(main):008:0> @access_token=@request_token.get_access_token
-  => #<OAuth::AccessToken:0xb7667c10 @consumer=#<OAuth::Consumer:0xb7683b7c @key="accesstoken_key",
-  @http=#<Net::HTTP www.muddy.it:80 open=false>, @http_method=:post,
-  @secret="accesstoken_secret", @options={:oauth_version=>"1.0",
-  :signature_method=>"HMAC-SHA1", :request_token_path=>"/oauth/request_token",
-  :site=>"http://www.muddy.it", :scheme=>:header, :authorize_path=>"/oauth/authorize",
-  :access_token_path=>"/oauth/access_token", :http_method=>:post}>, @token="accesstoken",
-  @secret="accesstoken_secret">
-
-This token can also be used to access the service :
-
-  irb(main):016:0> res = @access_token.get "/sites.json"
-  => #<Net::HTTPOK 200 OK readbody=true>
-  irb(main):017:0> res.body
-  ....
-
-The access token credentials to be used with muddyit_fu are :
-
-  irb(main):011:0> @access_token.token
-  => "sometoken"
-  irb(main):012:0> @access_token.secret
-  => "somesecret"
+See http://gist.github.com/178993 for details on how to obtain access credentials.
 
 == Contact
 
