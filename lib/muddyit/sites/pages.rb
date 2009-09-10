@@ -59,7 +59,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
       raise
     end
 
-    body = { :page => doc, :options => options }
+    body = { :page => doc.merge!(:options => options) }
 
     api_url = "/sites/#{self.site.attributes[:token]}/pages/"
     response = @muddyit.send_request(api_url, :post, {}, body.to_json)

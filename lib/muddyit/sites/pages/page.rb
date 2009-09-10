@@ -17,7 +17,7 @@ class Muddyit::Sites::Site::Pages::Page < Muddyit::Generic
     # Ensure we get extracted_content as well
     options[:include_content] = true
 
-    body = { :page => { :uri => self.uri }, :options => options }
+    body = { :page => { :uri => self.uri, :options => options } }
 
     api_url = "/sites/#{self.site.attributes[:token]}/pages/#{self.identifier}"
     response = @muddyit.send_request(api_url, :put, {}, body.to_json)
