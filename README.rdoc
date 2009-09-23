@@ -32,20 +32,26 @@ can be stored in a yml file, an example of which is provided below.
   access_token: "YOUR_ACCESS_TOKEN"
   access_token_secret: "YOUR_ACCESS_TOKEN_SECRET"
 
-== Retrieving a site
+== Retrieving all sites
 
   require 'muddyit_fu'
   muddyit = Muddyit.new('muddyit.yml')
-  muddyit.sites.each do |site|
+  muddyit.sites.find(:all).each do |site|
     puts "#{site.label} : #{site.token}"
   end
+
+== Retrieving a single site
+
+  require 'muddyit_fu'
+  muddyit = Muddyit.new('muddyit.yml')
+  puts muddyit.sites.find('a0ret4').label
 
 == Categorisation request
 
   require 'muddyit_fu'
   muddyit = Muddyit.new('muddyit.yml')
   site = muddyit.sites.first
-  site.pages.categorise({:identifier => 'http://news.bbc.co.uk/1/hi/uk_politics/8011321.stm'}, {:minium_confidence => 0.2})
+  site.pages.create({:identifier => 'http://news.bbc.co.uk/1/hi/uk_politics/8011321.stm'}, {:minium_confidence => 0.2})
 
 == View categorised pages
 
@@ -55,10 +61,10 @@ can be stored in a yml file, an example of which is provided below.
                          :access_token => 'ccc',
                          :access_token_secret => 'ddd')
   site = muddyit.sites.first
-  site.pages.index do |page|
+  site.pages.find(:all) do |page|
     puts page.title
-    page.results.each do |result|
-      puts result.uri
+    page.entities.each do |entity|
+      puts entity.uri
     end
   end
 
@@ -66,7 +72,7 @@ can be stored in a yml file, an example of which is provided below.
 
   require 'muddyit_fu'
   muddyit = Muddyit.new('muddyit.yml')
-  site = muddyit.sites.first
+  site = muddyit.sites.find(:all).first
   site.pages.find_by_entity('http://dbpedia.org/resource/Gordon_Brown') do |page|
     puts page.identifier
   end
@@ -75,8 +81,8 @@ can be stored in a yml file, an example of which is provided below.
 
   require 'muddyit_fu'
   muddyit = Muddyit.new('muddyit.yml')
-  site = muddyit.sites.first
-  site.entities.related('http://dbpedia.org/resource/Gordon_Brown').each do |entity|
+  site = muddyit.sites.find(:all).first
+  site.entities.find_related('http://dbpedia.org/resource/Gordon_Brown').each do |entity|
     puts "#{entity.uri} : #{entity.confidence}"
   end
 
@@ -84,20 +90,19 @@ can be stored in a yml file, an example of which is provided below.
 
   require 'muddyit_fu'
   muddyit = Muddyit.new('muddyit.yml')
-  site = muddyit.sites.first
-  page = site.pages.find('http://news.bbc.co.uk/1/hi/uk_politics/7878418.stm')
+  site = muddyit.sites.find(:all).first
+  page = site.pages.find(:all, :uri => 'http://news.bbc.co.uk/1/hi/uk_politics/7878418.stm').first
   puts "Our page : #{page.title}\n\n"
   page.related_content.each do |results|
     puts "#{results[:page].title} #{results[:count]}"
   end
 
-== Authorising clients using irb
+== Obtaining oauth access credentials
 
-See http://gist.github.com/178993 for details on how to obtain access credentials.
+See http://gist.github.com/178993
 
 == Contact
 
   Author: Rob Lee
   Email: robl [at] monkeyhelper.com
   Main Repository: http://github.com/monkeyhelper/muddyit_fu/tree/master
-
