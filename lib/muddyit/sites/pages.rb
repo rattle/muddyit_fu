@@ -125,7 +125,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
   #     must contain uri parameter which corresponds to dbpedia uri
   #
   def queryAllWithURI(uri, options, &block)
-    api_url = "/sites/#{self.site.attributes[:token]}/entities/#{Digest::MD5.hexdigest(URI.encode(uri))}"
+    api_url = "/sites/#{self.site.attributes[:token]}/entities/#{Digest::MD5.hexdigest(uri)}"
     query_page(api_url, options, &block)
   end
 
@@ -138,7 +138,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
   #
   #
   def queryAllWithTerm(term, options, &block)
-    api_url = "/sites/#{self.site.attributes[:token]}/terms/#{URI.escape(CGI.escape(term),'.')}"
+    api_url = "/sites/#{self.site.attributes[:token]}/terms/#{term}"
     query_page(api_url, options, &block)
   end
 

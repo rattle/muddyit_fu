@@ -14,7 +14,7 @@ class Muddyit::Sites::Site::Entities::Entity < Muddyit::Generic
   # * options (Optional)
   #
   def related(options = {})
-    api_url = "/sites/#{self.site.attributes[:token]}/entities/#{Digest::MD5.hexdigest(URI.encode(@attributes[:uri]))}/related"
+    api_url = "/sites/#{self.site.attributes[:token]}/entities/#{Digest::MD5.hexdigest(@attributes[:uri])}/related"
     response = @muddyit.send_request(api_url, :get, options)
 
     results = []
@@ -27,7 +27,7 @@ class Muddyit::Sites::Site::Entities::Entity < Muddyit::Generic
 
   protected
   def fetch
-    api_url = "/sites/#{@attributes[:site][:token]}/entities/#{Digest::MD5.hexdigest(URI.encode(@attributes[:uri]))}"
+    api_url = "/sites/#{@attributes[:site][:token]}/entities/#{Digest::MD5.hexdigest(@attributes[:uri])}"
     response = @muddyit.send_request(api_url, :get)
     response.nested_symbolize_keys!
   end
