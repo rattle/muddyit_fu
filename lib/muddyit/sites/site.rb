@@ -3,6 +3,7 @@ class Muddyit::Sites::Site < Muddyit::Generic
   # get pages object for site
   #
   def pages() @pages ||= Muddyit::Sites::Site::Pages.new(@muddyit, :site => self) end
+  def entities() @entities ||= Muddyit::Sites::Site::Entities.new(@muddyit, :site => self) end
   
   protected
   def fetch
