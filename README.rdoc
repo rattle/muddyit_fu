@@ -82,8 +82,9 @@ can be stored in a yml file, an example of which is provided below.
   require 'muddyit_fu'
   muddyit = Muddyit.new('muddyit.yml')
   site = muddyit.sites.find(:all).first
-  site.entities.find_related('http://dbpedia.org/resource/Gordon_Brown').each do |entity|
-    puts "#{entity.uri} : #{entity.confidence}"
+  puts "Related entity\tOccurance
+  site.entities.find_related('http://dbpedia.org/resource/Gordon_Brown').each do |entry|
+    puts "#{entry[:enity].uri}\t#{entry[:count]}"
   end
 
 == Find related content for : http://news.bbc.co.uk/1/hi/uk_politics/7878418.stm

@@ -14,8 +14,7 @@ class Muddyit::Sites::Site::Entities < Muddyit::Generic
 
     results = []
     response.each { |result|
-      # The return format needs sorting out here .......
-      results.push Muddyit::Sites::Site::Entities::Entity.new(@muddyit, result)
+      results.push :count => result.delete('count'), :entity => Muddyit::Sites::Site::Entities::Entity.new(@muddyit, result)
     }
     return results
   end
