@@ -2,7 +2,7 @@
 
 == Installation
 
-  sudo gem install gemcutter.org
+  sudo gem install gemcutter
   sudo gem tumble
   sudo gem install muddyit_fu
 
