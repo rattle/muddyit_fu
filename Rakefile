@@ -6,9 +6,9 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "muddyit_fu"
     gem.summary = "Provides a ruby interface to muddy.it"
-    gem.email = "robl[at]monkeyhelper.com"
-    gem.homepage = "http://github.com/monkeyhelper/muddyit_fu"
-    gem.authors = ["robl"]
+    gem.email = "support[at]muddy.it"
+    gem.homepage = "http://github.com/rattle/muddyit_fu"
+    gem.authors = ["rattle"]
     gem.add_dependency('json', '>= 0.0.0')
     gem.add_dependency('oauth', '>= 0.3.6')
 

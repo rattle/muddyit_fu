@@ -2,7 +2,9 @@
 
 == Installation
 
-  sudo gem install monkeyhelper-muddyit-fu --source http://gems.github.com
+  sudo gem install gemcutter.org
+  sudo gem tumble
+  sudo gem install muddyit_fu
 
 == Getting started
 
@@ -105,5 +107,5 @@ See http://gist.github.com/178993
 == Contact
 
   Author: Rob Lee
-  Email: robl [at] monkeyhelper.com
-  Main Repository: http://github.com/monkeyhelper/muddyit_fu/tree/master
+  Email: support [at] muddy.it
+  Main Repository: http://github.com/rattle/muddyit_fu/tree/master
