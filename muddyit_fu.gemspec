@@ -2,12 +2,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{muddyit_fu}
-  s.version = "0.2.5"
+  s.version = "0.2.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["robl"]
-  s.date = %q{2009-10-01}
-  s.email = %q{robl[at]monkeyhelper.com}
+  s.authors = ["rattle"]
+  s.date = %q{2009-11-04}
+  s.email = %q{support[at]muddy.it}
   s.extra_rdoc_files = [
     "LICENSE",
      "README.rdoc"
@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
      "lib/muddyit_fu.rb",
      "muddyit_fu.gemspec"
   ]
-  s.homepage = %q{http://github.com/monkeyhelper/muddyit_fu}
+  s.homepage = %q{http://github.com/rattle/muddyit_fu}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
