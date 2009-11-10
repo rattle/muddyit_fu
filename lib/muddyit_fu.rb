@@ -6,6 +6,7 @@ require 'json'
 #gem 'monkeyhelper-oauth', :lib => 'lib/oauth'
 require 'oauth/consumer'
 require 'digest/md5'
+require 'forwardable'
 
 require 'pp'
 
@@ -46,7 +47,7 @@ class Hash
 end
 
 # base must load first
-%w(base errors generic sites entities sites/site sites/pages sites/pages/page sites/pages/page/extracted_content sites/entities sites/entities/entity).each do |file|
+%w(base oauth errors generic sites entities sites/site sites/pages sites/pages/page sites/pages/page/extracted_content sites/entities sites/entities/entity).each do |file|
   require File.join(File.dirname(__FILE__), 'muddyit', file)
 end
 

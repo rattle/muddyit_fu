@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["rattle"]
-  s.date = %q{2009-11-04}
+  s.date = %q{2009-11-10}
   s.email = %q{support[at]muddy.it}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "lib/muddyit/base.rb",
+     "lib/muddyit/oauth.rb",
      "lib/muddyit/entities.rb",
      "lib/muddyit/errors.rb",
      "lib/muddyit/generic.rb",

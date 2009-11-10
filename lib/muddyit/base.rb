@@ -67,8 +67,8 @@ module Muddyit
         raise 'config file must contain consumer_key and consumer_secret' unless @consumer_key and @consumer_secret
       end
 
-      @consumer = OAuth::Consumer.new(@consumer_key, @consumer_secret, {:site=>@rest_endpoint})
-      @accesstoken = OAuth::AccessToken.new(@consumer, @access_token, @access_token_secret)
+      @consumer = ::OAuth::Consumer.new(@consumer_key, @consumer_secret, {:site=>@rest_endpoint})
+      @accesstoken = ::OAuth::AccessToken.new(@consumer, @access_token, @access_token_secret)
 
     end
 
