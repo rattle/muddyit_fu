@@ -12,7 +12,7 @@ module Muddyit
     end
 
     def consumer
-      @consumer ||= ::OAuth::Consumer.new(@ctoken, @csecret, {:site => 'http://staging.muddy.it'}.merge(consumer_options))
+      @consumer ||= ::OAuth::Consumer.new(@ctoken, @csecret, {:site => 'http://muddy.it'}.merge(consumer_options))
     end
 
     def set_callback_url(url)
