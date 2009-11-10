@@ -79,7 +79,7 @@ class Muddyit::Sites::Site::Pages::Page < Muddyit::Generic
     results = []
     if @attributes.has_key?(:entities)
       @attributes[:entities].each do |result|
-         results.push Muddyit::Sites::Site::Entities::Entity.new(@muddyit, result)
+         results.push Muddyit::Sites::Site::Entities::Entity.new(@muddyit, result.merge!(:site => @attributes[:site]))
       end
       @attributes[:entities] = results
     end
