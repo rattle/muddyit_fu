@@ -8,23 +8,10 @@
 
 == Getting started
 
-muddy.it uses oauth to manage it's api access.  To access the muddy.it data
-programmatically you will need to register an application.  Login and visit :
+muddy.it uses oauth to manage it's api access. 
 
-http://www.muddy.it/oauth_clients/
-
-You can register an application here, a callback URI isn't required.
-
-The 'consumer token' and 'consumer secret' are used to generate a token for
-accessing muddy.it.  For further details and an example of how to programatically
-generate a new access token for muddy.it see here :
-
-http://stakeventures.com/articles/2008/02/23/developing-oauth-clients-in-ruby
-
-See the 'Authorising clients using irb' section for a sample irb session.
-
-These details are then used to provide access to the service.  The credentials
-can be stored in a yml file, an example of which is provided below.
+See http://blog.muddy.it/2009/11/getting-started-with-muddy for details on how to
+use the API.
 
 == Example muddyit.yml
 
@@ -53,7 +40,7 @@ can be stored in a yml file, an example of which is provided below.
   require 'muddyit_fu'
   muddyit = Muddyit.new('muddyit.yml')
   site = muddyit.sites.first
-  site.pages.create({:identifier => 'http://news.bbc.co.uk/1/hi/uk_politics/8011321.stm'}, {:minium_confidence => 0.2})
+  site.pages.create({:uri => 'http://news.bbc.co.uk/1/hi/uk_politics/8011321.stm'}, {:minium_confidence => 0.2})
 
 == View categorised pages
 
@@ -99,10 +86,6 @@ can be stored in a yml file, an example of which is provided below.
   page.related_content.each do |results|
     puts "#{results[:page].title} #{results[:count]}"
   end
-
-== Obtaining oauth access credentials
-
-See http://gist.github.com/178993
 
 == Contact
 
