@@ -19,11 +19,13 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "examples/newsindexer.rb",
+     "examples/oauth.rb",
      "lib/muddyit/base.rb",
-     "lib/muddyit/oauth.rb",
      "lib/muddyit/entities.rb",
      "lib/muddyit/errors.rb",
      "lib/muddyit/generic.rb",
+     "lib/muddyit/oauth.rb",
      "lib/muddyit/sites.rb",
      "lib/muddyit/sites/entities.rb",
      "lib/muddyit/sites/entities/entity.rb",
@@ -39,6 +41,10 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Provides a ruby interface to muddy.it}
+  s.test_files = [
+    "examples/newsindexer.rb",
+     "examples/oauth.rb"
+  ]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
