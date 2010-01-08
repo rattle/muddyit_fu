@@ -1,4 +1,4 @@
-class Muddyit::Sites::Site::Pages::Page < Muddyit::Generic
+class Muddyit::Collections::Collection::Pages::Page < Muddyit::Generic
 
   # Create a set of entities from the categorisation results
   def initialize(muddyit, attributes = {})
@@ -19,9 +19,9 @@ class Muddyit::Sites::Site::Pages::Page < Muddyit::Generic
 
     body = { :page => { :uri => self.uri, :options => options } }
 
-    api_url = "/sites/#{self.site.attributes[:token]}/pages/#{self.identifier}"
+    api_url = "/collections/#{self.collection.attributes[:token]}/pages/#{self.identifier}"
     response = @muddyit.send_request(api_url, :put, {}, body.to_json)
-    return Muddyit::Sites::Site::Pages::Page.new(@muddyit, response['page'].merge!(:site => self.site))
+    return Muddyit::Collections::Collection::Pages::Page.new(@muddyit, response['page'].merge!(:collection => self.collection))
   end
 
 
@@ -30,10 +30,10 @@ class Muddyit::Sites::Site::Pages::Page < Muddyit::Generic
   def extracted_content
     if @extracted_content_cache.nil?
       if @attributes[:extracted_content]
-        @extracted_content_cache = Muddyit::Sites::Site::Pages::Page::ExtractedContent.new(@muddyit, @attributes[:extracted_content])
+        @extracted_content_cache = Muddyit::Collections::Collection::Pages::Page::ExtractedContent.new(@muddyit, @attributes[:extracted_content])
       else
         r = self.fetch
-        @extracted_content_cache = Muddyit::Sites::Site::Pages::Page::ExtractedContent.new(@muddyit, r[:extracted_content])
+        @extracted_content_cache = Muddyit::Collections::Collection::Pages::Page::ExtractedContent.new(@muddyit, r[:extracted_content])
       end
     end
     @extracted_content_cache
@@ -43,7 +43,7 @@ class Muddyit::Sites::Site::Pages::Page < Muddyit::Generic
   # delete the page
   #
   def destroy
-    api_url = "/sites/#{self.site.attributes[:token]}/pages/#{@attributes[:identifier]}"
+    api_url = "/colletions/#{self.collection.attributes[:token]}/pages/#{@attributes[:identifier]}"
     response = @muddyit.send_request(api_url, :delete, {})
     # Is this the correct thing to return ?
     return true
@@ -55,19 +55,19 @@ class Muddyit::Sites::Site::Pages::Page < Muddyit::Generic
   # * options (Optional)
   #
   def related_content(options = {})
-    api_url = "/sites/#{self.site.attributes[:token]}/pages/#{@attributes[:identifier]}/related"
+    api_url = "/collections/#{self.collection.attributes[:token]}/pages/#{@attributes[:identifier]}/related"
     response = @muddyit.send_request(api_url, :get, options, nil)
     results = []
     response.each { |result|
       # The return format needs sorting out here .......
-      results.push :page => @attributes[:site].pages.find(result['identifier']), :count => result['count']
+      results.push :page => @attributes[:collection].pages.find(result['identifier']), :count => result['count']
     }
     return results
   end
 
   protected
   def fetch
-    api_url = "/sites/#{self.site.attributes[:token]}/pages/#{@attributes[:identifier]}"
+    api_url = "/collections/#{self.collection.attributes[:token]}/pages/#{@attributes[:identifier]}"
     
     response = @muddyit.send_request(api_url, :get, {:include_content => true}, nil)
 
@@ -79,7 +79,7 @@ class Muddyit::Sites::Site::Pages::Page < Muddyit::Generic
     results = []
     if @attributes.has_key?(:entities)
       @attributes[:entities].each do |result|
-         results.push Muddyit::Sites::Site::Entities::Entity.new(@muddyit, result.merge!(:site => @attributes[:site]))
+         results.push Muddyit::Collections::Collection::Entities::Entity.new(@muddyit, result.merge!(:collection => @attributes[:collection]))
       end
       @attributes[:entities] = results
     end

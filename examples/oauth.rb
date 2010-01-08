@@ -32,7 +32,7 @@ begin
   puts "Secret : #{ssecret}"
   puts
 
-  puts "Account sites"
+  puts "Account collections"
   puts
   
   muddyit =  Muddyit.new(:consumer_key => token,
@@ -40,8 +40,8 @@ begin
                          :access_token => stoken,
                          :access_token_secret => ssecret)
   
-  muddyit.sites.find(:all).each do |site|
-    puts "#{site.label} has token #{site.token}"
+  muddyit.collections.find(:all).each do |collection|
+    puts "#{collection.label} has token #{collection.token}"
   end
 
 rescue OAuth::Unauthorized

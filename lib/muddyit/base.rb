@@ -98,8 +98,8 @@ module Muddyit
     end
 
 
-    # creates and/or returns the Muddyit::Sites object
-    def sites() @sites ||= Muddyit::Sites.new(self) end
+    # creates and/or returns the Muddyit::Collections object
+    def collections() @collections ||= Muddyit::Collections.new(self) end
 
     protected
 

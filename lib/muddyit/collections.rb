@@ -1,6 +1,6 @@
-class Muddyit::Sites < Muddyit::Base
+class Muddyit::Collections < Muddyit::Base
 
-  # create a new sites object
+  # create a new collections object
   # not a muddyit:generic as it doesn't need the method missing loader
   #
   # Params :
@@ -12,11 +12,11 @@ class Muddyit::Sites < Muddyit::Base
     @muddyit = muddyit
   end
 
-  # find a specific site
+  # find a specific collection
   #
   # Params
   # * type (Required)
-  #   one of :all or a site token
+  #   one of :all or a token
   #
   def find(type, options = {})
     raise 'no type specified' unless type
@@ -24,18 +24,18 @@ class Muddyit::Sites < Muddyit::Base
     if type.is_a? Symbol
       case type
       when :all
-        api_url = "/sites/"
+        api_url = "/collections/"
         response = @muddyit.send_request(api_url, :get, options)
-        sites = []
-        response.each { |site| sites.push Muddyit::Sites::Site.new(@muddyit, site['site']) }
-        return sites
+        collections = []
+        response.each { |collection| collections.push Muddyit::Collections::Collection.new(@muddyit, collection['collection']) }
+        return collections
       else
         raise 'invalid type specified'
       end
     elsif type.is_a? String
-      api_url = "/sites/#{type}"
+      api_url = "/collections/#{type}"
       response = @muddyit.send_request(api_url, :get, options)
-      return Muddyit::Sites::Site.new(@muddyit, response['site'])
+      return Muddyit::Collections::Collection.new(@muddyit, response['collection'])
     else
       raise 'invalid type specified'
     end

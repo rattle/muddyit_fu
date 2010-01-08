@@ -21,26 +21,26 @@ use the API.
   access_token: "YOUR_ACCESS_TOKEN"
   access_token_secret: "YOUR_ACCESS_TOKEN_SECRET"
 
-== Retrieving all sites
+== Retrieving all collections
 
   require 'muddyit_fu'
   muddyit = Muddyit.new('muddyit.yml')
-  muddyit.sites.find(:all).each do |site|
-    puts "#{site.label} : #{site.token}"
+  muddyit.collections.find(:all).each do |collection|
+    puts "#{collection.label} : #{collection.token}"
   end
 
-== Retrieving a single site
+== Retrieving a single collection
 
   require 'muddyit_fu'
   muddyit = Muddyit.new('muddyit.yml')
-  puts muddyit.sites.find('a0ret4').label
+  puts muddyit.collections.find('a0ret4').label
 
 == Categorisation request
 
   require 'muddyit_fu'
   muddyit = Muddyit.new('muddyit.yml')
-  site = muddyit.sites.first
-  site.pages.create({:uri => 'http://news.bbc.co.uk/1/hi/uk_politics/8011321.stm'}, {:minium_confidence => 0.2})
+  collection = muddyit.collections.first
+  collection.pages.create({:uri => 'http://news.bbc.co.uk/1/hi/uk_politics/8011321.stm'}, {:minium_confidence => 0.2})
 
 == View categorised pages
 
@@ -49,8 +49,8 @@ use the API.
                          :consumer_secret => 'bbb',
                          :access_token => 'ccc',
                          :access_token_secret => 'ddd')
-  site = muddyit.sites.first
-  site.pages.find(:all) do |page|
+  collection = muddyit.collections.first
+  collection.pages.find(:all) do |page|
     puts page.title
     page.entities.each do |entity|
       puts entity.uri
@@ -61,8 +61,8 @@ use the API.
 
   require 'muddyit_fu'
   muddyit = Muddyit.new('muddyit.yml')
-  site = muddyit.sites.find(:all).first
-  site.pages.find_by_entity('http://dbpedia.org/resource/Gordon_Brown') do |page|
+  collection = muddyit.collections.find(:all).first
+  collection.pages.find_by_entity('http://dbpedia.org/resource/Gordon_Brown') do |page|
     puts page.identifier
   end
 
@@ -70,9 +70,9 @@ use the API.
 
   require 'muddyit_fu'
   muddyit = Muddyit.new('muddyit.yml')
-  site = muddyit.sites.find(:all).first
+  collection = muddyit.collcetions.find(:all).first
   puts "Related entity\tOccurance
-  site.entities.find_related('http://dbpedia.org/resource/Gordon_Brown').each do |entry|
+  collection.entities.find_related('http://dbpedia.org/resource/Gordon_Brown').each do |entry|
     puts "#{entry[:enity].uri}\t#{entry[:count]}"
   end
 
@@ -80,8 +80,8 @@ use the API.
 
   require 'muddyit_fu'
   muddyit = Muddyit.new('muddyit.yml')
-  site = muddyit.sites.find(:all).first
-  page = site.pages.find(:all, :uri => 'http://news.bbc.co.uk/1/hi/uk_politics/7878418.stm').first
+  collection = muddyit.collections.find(:all).first
+  page = collection.pages.find(:all, :uri => 'http://news.bbc.co.uk/1/hi/uk_politics/7878418.stm').first
   puts "Our page : #{page.title}\n\n"
   page.related_content.each do |results|
     puts "#{results[:page].title} #{results[:count]}"

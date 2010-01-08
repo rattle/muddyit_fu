@@ -1,6 +1,6 @@
-class Muddyit::Sites::Site::Pages < Muddyit::Generic
+class Muddyit::Collections::Collection::Pages < Muddyit::Generic
 
-  # find a specific page from the site
+  # find a specific page from the collection
   #
   # Params
   # * type (Required)
@@ -12,23 +12,23 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
     if type.is_a? Symbol
       case type
       when :all
-        api_url = "/sites/#{self.site.attributes[:token]}/pages"
+        api_url = "/collections/#{self.collection.attributes[:token]}/pages"
         if block_given?
           token = nil
           begin
           response = @muddyit.send_request(api_url, :get, options.merge!(:page => token))
           response['pages'].each { |page|
-            yield Muddyit::Sites::Site::Pages::Page.new(@muddyit, page.merge!(:site => self.site))
+            yield Muddyit::Collections::Collection::Pages::Page.new(@muddyit, page.merge!(:collection => self.collection))
           }
           token = response['next_page']
           # Need to figure out which of the below actually occurs
           end while !token.nil? || !token == ''
         else
-          api_url = "/sites/#{self.site.attributes[:token]}/pages"
+          api_url = "/collections/#{self.collection.attributes[:token]}/pages"
           response = @muddyit.send_request(api_url, :get, options)
 
           pages = []
-          response['pages'].each { |page| pages.push Muddyit::Sites::Site::Pages::Page.new(@muddyit, page.merge!(:site => self.site)) }
+          response['pages'].each { |page| pages.push Muddyit::Collections::Collection::Pages::Page.new(@muddyit, page.merge!(:collection => self.collection)) }
           return { :next_page => response['next_page'], :pages => pages }
         end
       else
@@ -36,9 +36,9 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
       end
 
     elsif type.is_a? String
-      api_url = "/sites/#{self.site.attributes[:token]}/pages/#{type}"
+      api_url = "/collections/#{self.collection.attributes[:token]}/pages/#{type}"
       response = @muddyit.send_request(api_url, :get, {})
-      response.has_key?('identifier') ? Muddyit::Sites::Site::Pages::Page.new(@muddyit, response.merge!(:site => self.site)) : nil
+      response.has_key?('identifier') ? Muddyit::Collections::Collection::Pages::Page.new(@muddyit, response.merge!(:collection => self.collection)) : nil
     end
   end
 
@@ -61,9 +61,9 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
 
     body = { :page => doc.merge!(:options => options) }
 
-    api_url = "/sites/#{self.site.attributes[:token]}/pages/"
+    api_url = "/collections/#{self.collection.attributes[:token]}/pages/"
     response = @muddyit.send_request(api_url, :post, {}, body.to_json)
-    return Muddyit::Sites::Site::Pages::Page.new(@muddyit, response['page'].merge!(:site => self.site))
+    return Muddyit::Collections::Collection::Pages::Page.new(@muddyit, response['page'].merge!(:collection => self.collection))
   end
 
   # find all pages with specified entity
@@ -125,7 +125,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
   #     must contain uri parameter which corresponds to dbpedia uri
   #
   def queryAllWithURI(uri, options, &block)
-    api_url = "/sites/#{self.site.attributes[:token]}/entities/#{Digest::MD5.hexdigest(uri)}"
+    api_url = "/collections/#{self.collection.attributes[:token]}/entities/#{Digest::MD5.hexdigest(uri)}"
     query_page(api_url, options, &block)
   end
 
@@ -138,7 +138,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
   #
   #
   def queryAllWithTerm(term, options, &block)
-    api_url = "/sites/#{self.site.attributes[:token]}/terms/#{term}"
+    api_url = "/collections/#{self.collection.attributes[:token]}/terms/#{term}"
     query_page(api_url, options, &block)
   end
 
@@ -155,7 +155,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
         options.merge!(:page => token) unless token.nil?
         response = @muddyit.send_request(api_url, :get, options.merge!(:page => token))
         response['pages'].each { |page|
-          yield Muddyit::Sites::Site::Pages::Page.new(@muddyit, page.merge!(:site => self.site))
+          yield Muddyit::Collections::Collection::Pages::Page.new(@muddyit, page.merge!(:collection => self.collection))
         }
         token = response['next_page']
         # Need to figure out which of the below actually occurs
@@ -164,7 +164,7 @@ class Muddyit::Sites::Site::Pages < Muddyit::Generic
       response = @muddyit.send_request(api_url, :get, {})
 
       pages = []
-      response['pages'].each { |page| pages.push Muddyit::Sites::Site::Pages::Page.new(@muddyit, page.merge!(:site => self.site)) }
+      response['pages'].each { |page| pages.push Muddyit::Collections::Collection::Pages::Page.new(@muddyit, page.merge!(:collection => self.collection)) }
       return { :next_page => response[:next_page], :pages => pages }
     end    
   end

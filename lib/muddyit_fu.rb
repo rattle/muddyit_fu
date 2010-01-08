@@ -47,8 +47,6 @@ class Hash
 end
 
 # base must load first
-%w(base oauth errors generic sites entities sites/site sites/pages sites/pages/page sites/pages/page/extracted_content sites/entities sites/entities/entity).each do |file|
+%w(base oauth errors generic collections entities collections/collection collections/pages collections/pages/page collections/pages/page/extracted_content collections/entities collections/entities/entity).each do |file|
   require File.join(File.dirname(__FILE__), 'muddyit', file)
 end
-
-
