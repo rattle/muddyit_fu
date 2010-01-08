@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["rattle"]
-  s.date = %q{2009-11-10}
+  s.date = %q{2010-01-08}
   s.email = %q{support[at]muddy.it}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -22,17 +22,17 @@ Gem::Specification.new do |s|
      "examples/newsindexer.rb",
      "examples/oauth.rb",
      "lib/muddyit/base.rb",
+     "lib/muddyit/collections.rb",
+     "lib/muddyit/collections/collection.rb",
+     "lib/muddyit/collections/entities.rb",
+     "lib/muddyit/collections/entities/entity.rb",
+     "lib/muddyit/collections/pages.rb",
+     "lib/muddyit/collections/pages/page.rb",
+     "lib/muddyit/collections/pages/page/extracted_content.rb",
      "lib/muddyit/entities.rb",
      "lib/muddyit/errors.rb",
      "lib/muddyit/generic.rb",
      "lib/muddyit/oauth.rb",
-     "lib/muddyit/sites.rb",
-     "lib/muddyit/sites/entities.rb",
-     "lib/muddyit/sites/entities/entity.rb",
-     "lib/muddyit/sites/pages.rb",
-     "lib/muddyit/sites/pages/page.rb",
-     "lib/muddyit/sites/pages/page/extracted_content.rb",
-     "lib/muddyit/sites/site.rb",
      "lib/muddyit_fu.rb",
      "muddyit_fu.gemspec"
   ]
