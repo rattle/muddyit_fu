@@ -5,7 +5,6 @@ class Muddyit::Collections::Collection::Pages::Page::ExtractedContent < Muddyit:
     populate_terms
   end
 
-
   protected
 
   def populate_terms

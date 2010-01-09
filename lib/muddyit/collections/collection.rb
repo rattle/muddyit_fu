@@ -4,7 +4,12 @@ class Muddyit::Collections::Collection < Muddyit::Generic
   #
   def pages() @pages ||= Muddyit::Collections::Collection::Pages.new(@muddyit, :collection => self) end
   def entities() @entities ||= Muddyit::Collections::Collection::Entities.new(@muddyit, :collection => self) end
-  
+
+  def destroy
+    api_url = "/collections/#{@attributes[:token]}"
+    @muddyit.send_request(api_url, :delete, {})
+  end
+
   protected
   def fetch
     api_url = "/collections/#{@attributes[:token]}"

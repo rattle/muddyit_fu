@@ -88,15 +88,22 @@ module Muddyit
       res = request_over_http(api_url, http_method, opts, body)
       # Strip any js wrapping methods
 
-      if res.body =~ /^.+\((.+)\)$/
-        r = JSON.parse($1)
+      case res
+      when Net::HTTPSuccess, Net::HTTPRedirection
+        case res.body
+        when " "
+          return res
+        when /^.+\((.+)\)$/
+          return JSON.parse($1)
+        else
+          return JSON.parse(res.body)
+        end
+      when Net::HTTPNotFound
+        return res
       else
-        r = JSON.parse(res.body)
+        return res.error!
       end
-      
-      return r
     end
-
 
     # creates and/or returns the Muddyit::Collections object
     def collections() @collections ||= Muddyit::Collections.new(self) end

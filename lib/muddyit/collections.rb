@@ -12,6 +12,19 @@ class Muddyit::Collections < Muddyit::Base
     @muddyit = muddyit
   end
 
+  def create(label, uri)
+
+    raise unless label
+
+    body = {:collection => {}}
+    body[:collection].merge!(:label => label) if label
+    body[:collection].merge!(:uri => uri) if uri
+
+    api_url = "/collections/"
+    response = @muddyit.send_request(api_url, :post, {}, body.to_json)
+    return Muddyit::Collections::Collection.new(@muddyit, response['collection'])
+  end
+
   # find a specific collection
   #
   # Params

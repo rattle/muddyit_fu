@@ -38,7 +38,8 @@ class Muddyit::Generic < Muddyit::Base
       @info_added = true
     end
     unless @attributes.has_key?(method.to_sym)
-      raise "No method named #{method.to_s}"
+      puts "Failed to find missing method #{method.to_s}"
+      raise
     end
     if args.nil?
       @attributes[method.to_sym]
