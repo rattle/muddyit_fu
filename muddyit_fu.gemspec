@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["rattle"]
-  s.date = %q{2010-01-08}
+  s.date = %q{2010-01-09}
   s.email = %q{support[at]muddy.it}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -34,7 +34,10 @@ Gem::Specification.new do |s|
      "lib/muddyit/generic.rb",
      "lib/muddyit/oauth.rb",
      "lib/muddyit_fu.rb",
-     "muddyit_fu.gemspec"
+     "muddyit_fu.gemspec",
+     "test/config.yml.example",
+     "test/test_helper.rb",
+     "test/test_muddyit_fu.rb"
   ]
   s.homepage = %q{http://github.com/rattle/muddyit_fu}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -42,7 +45,9 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Provides a ruby interface to muddy.it}
   s.test_files = [
-    "examples/newsindexer.rb",
+    "test/test_muddyit_fu.rb",
+     "test/test_helper.rb",
+     "examples/newsindexer.rb",
      "examples/oauth.rb"
   ]
 
