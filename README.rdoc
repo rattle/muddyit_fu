@@ -1,55 +1,80 @@
 = muddyit_fu
 
+Muddy is an information extraction platform.  For further
+details see the 'Getting Started with Muddy' article.  This gem provides
+access to the Muddy platform via it's API :
+
+http://muddy.it/developers/
+
 == Installation
 
   sudo gem install gemcutter
   sudo gem tumble
   sudo gem install muddyit_fu
 
-== Getting started
+== Authentication and authorisation
 
-muddy.it uses oauth to manage it's api access. 
+Muddy supports OAuth and HTTP Basic auth for authentication and authorisation.
+We recommend you use OAuth wherever possible when accessing Muddy.  An example
+of using OAuth with the muddy platform is :
 
-See http://blog.muddy.it/2009/11/getting-started-with-muddy for details on how to
-use the API.
+http://blog.muddy.it/2010/01/building-with-muddy-and-oauth
 
-== Example muddyit.yml
+=== Example muddyit.yml for OAuth
 
   ---
-  consumer_key: "YOUR_CONSUMER_KEY"
-  consumer_secret: "YOUR_CONSUMER_SECRET"
-  access_token: "YOUR_ACCESS_TOKEN"
-  access_token_secret: "YOUR_ACCESS_TOKEN_SECRET"
+  consumer_key: YOUR_CONSUMER_KEY
+  consumer_secret: YOUR_CONSUMER_SECRET
+  access_token: YOUR_ACCESS_TOKEN
+  access_token_secret: YOUR_ACCESS_TOKEN_SECRET
 
-== Retrieving all collections
+=== Example muddyit.yml for HTTP Basic Auth
+
+  ---
+  username: YOUR_USERNAME
+  password: YOUR_PASSWORD
+
+== Simplest entity extraction example
+
+This example uses the basic 'extract' method to retrieve a list of entities from
+a piece of source text.
 
   require 'muddyit_fu'
-  muddyit = Muddyit.new('muddyit.yml')
-  muddyit.collections.find(:all).each do |collection|
-    puts "#{collection.label} : #{collection.token}"
+  muddyit =  Muddyit.new('./config.yml')
+  page = muddyit.extract(:text => ARGV[0])
+  page.entities.each do |entity|
+    puts "\t#{entity.term}, #{entity.uri}, #{entity.classification}"
   end
 
-== Retrieving a single collection
+== Working with web pages instead of text
 
-  require 'muddyit_fu'
-  muddyit = Muddyit.new('muddyit.yml')
-  puts muddyit.collections.find('a0ret4').label
+Muddy uses an intelligent extraction method to identify the key text on any given
+web page, meaning that the entities extracted are relevant to the article and don't
+include spurious results from navigation sidebars or page footers.  To work with
+a URL use :
 
-== Categorisation request
+  page = muddyit.extract(:uri => ARGV[0])
 
-  require 'muddyit_fu'
-  muddyit = Muddyit.new('muddyit.yml')
-  collection = muddyit.collections.first
+== Storing extraction results in a collection
+
+Muddy allows you to store the entity extraction results so aggregate operations
+can be performed over a collection of content (a 'collection' has many analysed 'pages').
+A basic muddy account provides a single 'collection' where extraction results
+can be stored.
+
+To store a page against a collection, the collection must first be found :
+
+  collection = muddyit.collections.find(:all).first
+
+Once a collection has been found, entity extraction results can be stored in it:
+
   collection.pages.create({:uri => 'http://news.bbc.co.uk/1/hi/uk_politics/8011321.stm'}, {:minium_confidence => 0.2})
 
-== View categorised pages
+== Viewing analysed pages in a collection
 
   require 'muddyit_fu'
-  muddyit =  Muddyit.new(:consumer_key => 'aaa',
-                         :consumer_secret => 'bbb',
-                         :access_token => 'ccc',
-                         :access_token_secret => 'ddd')
-  collection = muddyit.collections.first
+  muddyit =  Muddyit.new('./config.yml')
+  collection = muddyit.collections.find(:all).first
   collection.pages.find(:all) do |page|
     puts page.title
     page.entities.each do |entity|
@@ -57,32 +82,50 @@ use the API.
     end
   end
 
-== View all pages containing 'Gordon Brown'
+== Working with a collection
+
+A collection allows aggregate operations to be perfomed on itself and on it's
+members.  A collection is identified by it's 'collection token'.  This is an
+alphanumeric six character string (e.g. 'a0ret4').  A collection can be found if
+it's token is known :
+
+  collection = muddyit.collections.find('a0ret4')
+
+=== View all pages containing 'Gordon Brown'
+
+If we want to find all references to the grounded entity for 'Gordon Brown 'then
+it can be searched for using it's DBpedia URI :
 
   require 'muddyit_fu'
-  muddyit = Muddyit.new('muddyit.yml')
-  collection = muddyit.collections.find(:all).first
+  muddyit = Muddyit.new('./config.yml')
+  collection = muddyit.collections.find('a0ret4')
   collection.pages.find_by_entity('http://dbpedia.org/resource/Gordon_Brown') do |page|
     puts page.identifier
   end
 
-== Find related entities for 'Gordon Brown'
+=== Find related entities for 'Gordon Brown'
+
+To find other entities that occur frequently with 'Gordon Brown' in this
+collection :
 
   require 'muddyit_fu'
-  muddyit = Muddyit.new('muddyit.yml')
-  collection = muddyit.collcetions.find(:all).first
+  muddyit = Muddyit.new('./config.yml')
+  collection = muddyit.collections.find('a0ret4')
   puts "Related entity\tOccurance
   collection.entities.find_related('http://dbpedia.org/resource/Gordon_Brown').each do |entry|
     puts "#{entry[:enity].uri}\t#{entry[:count]}"
   end
 
-== Find related content for : http://news.bbc.co.uk/1/hi/uk_politics/7878418.stm
+=== Find related content for : http://news.bbc.co.uk/1/hi/uk_politics/7878418.stm
+
+To find other content in the collection that shares similar entities with the
+analysed page that has a uri 'http://news.bbc.co.uk/1/hi/uk_politics/7878418.stm' :
 
   require 'muddyit_fu'
-  muddyit = Muddyit.new('muddyit.yml')
+  muddyit = Muddyit.new('./config.yml')
   collection = muddyit.collections.find(:all).first
   page = collection.pages.find(:all, :uri => 'http://news.bbc.co.uk/1/hi/uk_politics/7878418.stm').first
-  puts "Our page : #{page.title}\n\n"
+  puts "Page : #{page.title}\n\n"
   page.related_content.each do |results|
     puts "#{results[:page].title} #{results[:count]}"
   end
