@@ -1,10 +1,10 @@
 = muddyit_fu
 
 Muddy is an information extraction platform.  For further
-details see the 'Getting Started with Muddy' article.  This gem provides
-access to the Muddy platform via it's API :
+details see the '{Getting Started with Muddy}[http://blog.muddy.it/2009/11/getting-started-with-muddy]'
+article.  This gem provides access to the Muddy platform via it's API :
 
-http://muddy.it/developers/
+{Muddy Developer Guide}[http://muddy.it/developers/]
 
 == Installation
 
@@ -16,9 +16,9 @@ http://muddy.it/developers/
 
 Muddy supports OAuth and HTTP Basic auth for authentication and authorisation.
 We recommend you use OAuth wherever possible when accessing Muddy.  An example
-of using OAuth with the muddy platform is :
-
-http://blog.muddy.it/2010/01/building-with-muddy-and-oauth
+of using OAuth with the muddy platform is descibed in the 
+{Building with Muddy and OAuth}[http://blog.muddy.it/2010/01/building-with-muddy-and-oauth]
+article.
 
 === Example muddyit.yml for OAuth
 
