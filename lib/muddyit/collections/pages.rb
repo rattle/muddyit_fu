@@ -49,18 +49,26 @@ class Muddyit::Collections::Collection::Pages < Muddyit::Generic
   # Params
   # * options (Required)
   #
-  def create(doc = {}, options = {})
+  def create(doc, options = {})
+
+    document = {}
+    if doc.is_a? Hash
+      unless doc[:uri] || doc[:text]
+        raise
+      end
+      document = doc
+    elsif doc.is_a? String
+      if doc =~ /^http:\/\//
+        document[:uri] = doc
+      else
+        document[:text] = doc
+      end
+    end
 
     # Ensure we get content_data as well
     options[:include_content] = true
 
-    # Ensure we have encoded the identifier and URI
-    unless doc[:uri] || doc[:text]
-      raise
-    end
-
-    body = { :page => doc.merge!(:options => options) }
-
+    body = { :page => document.merge!(:options => options) }
     api_url = "/collections/#{self.collection.attributes[:token]}/pages/"
     response = @muddyit.send_request(api_url, :post, {}, body.to_json)
     return Muddyit::Collections::Collection::Pages::Page.new(@muddyit, response['page'].merge!(:collection => self.collection))

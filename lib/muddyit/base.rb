@@ -125,22 +125,29 @@ module Muddyit
     def collections() @collections ||= Muddyit::Collections.new(self) end
 
     # A mirror of the pages.create method, but for one off, non-stored, quick extraction
-    def extract(doc={}, options={})
+    def extract(doc, options={})
+
+      document = {}
+      if doc.is_a? Hash
+        unless doc[:uri] || doc[:text]
+          raise
+        end
+        document = doc
+      elsif doc.is_a? String
+        if doc =~ /^http:\/\//
+          document[:uri] = doc
+        else
+          document[:text] = doc
+        end
+      end
 
       # Ensure we get content_data as well
       options[:include_content] = true
 
-      # Ensure we have encoded the identifier and URI
-      unless doc[:uri] || doc[:text]
-        raise
-      end
-
-      body = { :page => doc.merge!(:options => options) }
-
+      body = { :page => document.merge!(:options => options) }
       api_url = "/extract"
       response = self.send_request(api_url, :post, {}, body.to_json)
       return Muddyit::Collections::Collection::Pages::Page.new(self, response)
-
     end
     
     protected

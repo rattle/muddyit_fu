@@ -24,7 +24,7 @@ class TestMuddyitFu < Test::Unit::TestCase
     end
 
     should "analyse a page without a collection" do
-      page = @muddyit.extract({:uri => @@STORY})
+      page = @muddyit.extract(@@STORY)
       assert page.entities.length > 0
     end
 

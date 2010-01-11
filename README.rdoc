@@ -41,7 +41,7 @@ a piece of source text.
 
   require 'muddyit_fu'
   muddyit =  Muddyit.new('./config.yml')
-  page = muddyit.extract(:text => ARGV[0])
+  page = muddyit.extract(ARGV[0])
   page.entities.each do |entity|
     puts "\t#{entity.term}, #{entity.uri}, #{entity.classification}"
   end
@@ -50,10 +50,10 @@ a piece of source text.
 
 Muddy uses an intelligent extraction method to identify the key text on any given
 web page, meaning that the entities extracted are relevant to the article and don't
-include spurious results from navigation sidebars or page footers.  To work with
-a URL use :
+include spurious results from navigation sidebars or page footers.  To work with a
+URL rather than text, just specify a URL instead :
 
-  page = muddyit.extract(:uri => ARGV[0])
+  page = muddyit.extract('http://news.bbc.co.uk/1/hi/northern_ireland/8450854.stm')
 
 == Storing extraction results in a collection
 
@@ -68,9 +68,14 @@ To store a page against a collection, the collection must first be found :
 
 Once a collection has been found, entity extraction results can be stored in it:
 
-  collection.pages.create({:uri => 'http://news.bbc.co.uk/1/hi/uk_politics/8011321.stm'}, {:minium_confidence => 0.2})
+  collection.pages.create('http://news.bbc.co.uk/1/hi/uk_politics/8011321.stm', {:minium_confidence => 0.2})
 
-== Viewing analysed pages in a collection
+== Viewing all analysed pages in a collection
+
+You can iterate through all the analysed pages in a collection, be aware that
+the Muddy API provides the pages as paginated sets, so it may take some time to
+page through a complete set of pages in a collection (due to repeated HTTP requests
+for each new paginated set of results).
 
   require 'muddyit_fu'
   muddyit =  Muddyit.new('./config.yml')
@@ -78,7 +83,7 @@ Once a collection has been found, entity extraction results can be stored in it:
   collection.pages.find(:all) do |page|
     puts page.title
     page.entities.each do |entity|
-      puts entity.uri
+      puts "\t#{entity.uri}"
     end
   end
 
