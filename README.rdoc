@@ -14,7 +14,7 @@ article.  This gem provides access to the Muddy platform via it's API (see {Mudd
 
 Muddy supports OAuth and HTTP Basic auth for authentication and authorisation.
 We recommend you use OAuth wherever possible when accessing Muddy.  An example
-of using OAuth with the muddy platform is described in the
+of using OAuth with the Muddy platform is described in the
 {Building with Muddy and OAuth}[http://blog.muddy.it/2010/01/building-with-muddy-and-oauth]
 article.
 
@@ -57,7 +57,7 @@ URL rather than text, just specify a URL instead :
 
 Muddy allows you to store the entity extraction results so aggregate operations
 can be performed over a collection of content (a 'collection' has many analysed 'pages').
-A basic muddy account provides a single 'collection' where extraction results
+A basic Muddy account provides a single 'collection' where extraction results
 can be stored.
 
 To store a page against a collection, the collection must first be found :
@@ -104,6 +104,22 @@ for the page using other attributes :
   page = collection.pages.find(:all, :uri => 'http://news.bbc.co.uk/1/hi/business/8186840.stm').first
   page = collection.pages.find(:all, :title => 'BBC NEWS | Business | ITV in 25m Friends Reunited sale').first
 
+=== Rereshing a page's results
+
+A page can be 'refereshed' (the entity extraction is run again) by calling the
+refresh method on a page object :
+
+  page = collection.pages.find('5d0e32b6-fd0b-400a-ac49-dae965a292df')
+  updated_page = page.update
+
+=== Deleting a page from a collection
+
+A page can be removed from a collection by calling the 'destroy' method on a
+page object :
+
+  page = collection.pages.find('5d0e32b6-fd0b-400a-ac49-dae965a292df')
+  page.destroy
+
 === View all pages containing entity 'Gordon Brown'
 
 If we want to find all pages that reference the grounded entity for 'Gordon Brown' then
@@ -142,6 +158,17 @@ analysed page that has a uri 'http://news.bbc.co.uk/1/hi/uk_politics/7878418.stm
   page.related_content.each do |results|
     puts "#{results[:page].title} #{results[:count]}"
   end
+
+== Batch processing content and the Muddy queue
+
+The Muddy platform runs a background job queue that allows many requests to be
+made in quick succession (rather than waiting for the full extraction request to
+complete), with analysis of the pages happening asynchronously via the queue
+and being stored in the collection at a later time.  This can be useful when trying
+to analyse large content collections.  To send a request to the queue use :
+
+  collection = muddyit.collections.find('a0ret4')
+  collection.pages.create('http://news.bbc.co.uk/1/hi/uk_politics/8011321.stm', {:realtime => false})
 
 == Contact
 
