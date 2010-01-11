@@ -15,10 +15,17 @@ class TestMuddyitFu < Test::Unit::TestCase
                              :consumer_secret => c['consumer_secret'],
                              :access_token => c['access_token'],
                              :access_token_secret => c['access_token_secret'],
-                             :rest_endpoint => c['rest_endpoint'])
+                             :rest_endpoint => c['rest_endpoint'],
+                             :username => c['username'],
+                             :password => c['password'])
       rescue
         puts "Failed to connect to muddy, are the details correct ?"
       end
+    end
+
+    should "analyse a page without a collection" do
+      page = @muddyit.extract({:uri => @@STORY})
+      assert page.entities.length > 0
     end
 
     should 'be able to create a collection' do
