@@ -2,9 +2,7 @@
 
 Muddy is an information extraction platform.  For further
 details see the '{Getting Started with Muddy}[http://blog.muddy.it/2009/11/getting-started-with-muddy]'
-article.  This gem provides access to the Muddy platform via it's API :
-
-{Muddy Developer Guide}[http://muddy.it/developers/]
+article.  This gem provides access to the Muddy platform via it's API (see {Muddy Developer Guide}[http://muddy.it/developers/]).
 
 == Installation
 
