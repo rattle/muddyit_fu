@@ -14,7 +14,7 @@ article.  This gem provides access to the Muddy platform via it's API (see {Mudd
 
 Muddy supports OAuth and HTTP Basic auth for authentication and authorisation.
 We recommend you use OAuth wherever possible when accessing Muddy.  An example
-of using OAuth with the muddy platform is descibed in the 
+of using OAuth with the muddy platform is described in the
 {Building with Muddy and OAuth}[http://blog.muddy.it/2010/01/building-with-muddy-and-oauth]
 article.
 
@@ -68,7 +68,16 @@ Once a collection has been found, entity extraction results can be stored in it:
 
   collection.pages.create('http://news.bbc.co.uk/1/hi/uk_politics/8011321.stm', {:minium_confidence => 0.2})
 
-== Viewing all analysed pages in a collection
+== Working with a collection
+
+A collection allows aggregate operations to be perfomed on itself and on it's
+members.  A collection is identified by it's 'collection token'.  This is an
+alphanumeric six character string (e.g. 'a0ret4').  A collection can be found if
+it's token is known :
+
+  collection = muddyit.collections.find('a0ret4')
+
+=== Viewing all analysed pages
 
 You can iterate through all the analysed pages in a collection, be aware that
 the Muddy API provides the pages as paginated sets, so it may take some time to
@@ -85,25 +94,26 @@ for each new paginated set of results).
     end
   end
 
-== Working with a collection
+=== Finding a particular page or pages
 
-A collection allows aggregate operations to be perfomed on itself and on it's
-members.  A collection is identified by it's 'collection token'.  This is an
-alphanumeric six character string (e.g. 'a0ret4').  A collection can be found if
-it's token is known :
+Each page in a collection is assigned a unique alphanumeric identifier.  Whilst
+this can be used to find a given page in a collection, it is possible to search
+for the page using other attributes :
 
-  collection = muddyit.collections.find('a0ret4')
+  page = collection.pages.find('5d0e32b6-fd0b-400a-ac49-dae965a292df')
+  page = collection.pages.find(:all, :uri => 'http://news.bbc.co.uk/1/hi/business/8186840.stm').first
+  page = collection.pages.find(:all, :title => 'BBC NEWS | Business | ITV in 25m Friends Reunited sale').first
 
-=== View all pages containing 'Gordon Brown'
+=== View all pages containing entity 'Gordon Brown'
 
-If we want to find all references to the grounded entity for 'Gordon Brown 'then
+If we want to find all pages that reference the grounded entity for 'Gordon Brown' then
 it can be searched for using it's DBpedia URI :
 
   require 'muddyit_fu'
   muddyit = Muddyit.new('./config.yml')
   collection = muddyit.collections.find('a0ret4')
   collection.pages.find_by_entity('http://dbpedia.org/resource/Gordon_Brown') do |page|
-    puts page.identifier
+    puts "#{page.identifier} - #{page.title}"
   end
 
 === Find related entities for 'Gordon Brown'
@@ -116,7 +126,7 @@ collection :
   collection = muddyit.collections.find('a0ret4')
   puts "Related entity\tOccurance
   collection.entities.find_related('http://dbpedia.org/resource/Gordon_Brown').each do |entry|
-    puts "#{entry[:enity].uri}\t#{entry[:count]}"
+    puts "#{entry[:entity].uri}\t#{entry[:count]}"
   end
 
 === Find related content for : http://news.bbc.co.uk/1/hi/uk_politics/7878418.stm
