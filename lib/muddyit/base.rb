@@ -1,7 +1,17 @@
 module Muddyit
 
+  class_attr_accessor :REST_ENDPOINT
+
+  @@REST_ENDPOINT = 'http://muddy.it'
+
   def self.new(*params)
     Muddyit::Base.new(*params)
+  end
+
+  # Shortcut class method for extract
+  def self.extract(doc, options={})
+    @muddyit = Muddyit.new()
+    @muddyit.extract(doc, options)
   end
 
   class Base
@@ -12,8 +22,6 @@ module Muddyit
 
     @@http_open_timeout = 120
     @@http_read_timeout = 120
-
-    REST_ENDPOINT = 'http://www.muddy.it'
 
     # Set the request signing method
     @@digest1   = OpenSSL::Digest::Digest.new("sha1")
@@ -47,7 +55,8 @@ module Muddyit
     # access_token: CCC
     # access_token_secret: DDD
     #
-    def initialize(config_hash_or_file)
+    def initialize(config_hash_or_file = {})
+
       if config_hash_or_file.is_a? Hash
         config_hash_or_file.nested_symbolize_keys!
         @username = config_hash_or_file[:username]
@@ -56,7 +65,7 @@ module Muddyit
         @consumer_secret = config_hash_or_file[:consumer_secret]
         @access_token = config_hash_or_file[:access_token]
         @access_token_secret = config_hash_or_file[:access_token_secret]
-        @rest_endpoint = config_hash_or_file.has_key?(:rest_endpoint) ? config_hash_or_file[:rest_endpoint] : REST_ENDPOINT
+        @rest_endpoint = config_hash_or_file.key?(:rest_endpoint) ? config_hash_or_file[:rest_endpoint] : Muddyit.REST_ENDPOINT
       else
         config = YAML.load_file(config_hash_or_file)
         config.nested_symbolize_keys!
@@ -66,7 +75,7 @@ module Muddyit
         @consumer_secret = config[:consumer_secret]
         @access_token = config[:access_token]
         @access_token_secret = config[:access_token_secret]
-        @rest_endpoint = config.has_key?(:rest_endpoint) ? config[:rest_endpoint] : REST_ENDPOINT
+        @rest_endpoint = config.key?(:rest_endpoint) ? config[:rest_endpoint] : Muddyit.REST_ENDPOINT
       end
 
       if !@consumer_key.nil?
@@ -75,10 +84,7 @@ module Muddyit
         @accesstoken = ::OAuth::AccessToken.new(@consumer, @access_token, @access_token_secret)
       elsif !@username.nil?
         @auth_type = :basic
-      else
-        raise "unable to find authentication credentials"
       end
-
     end
 
     # sends a request to the muddyit REST api
@@ -99,7 +105,7 @@ module Muddyit
       case @auth_type
       when :oauth
         res = oauth_request_over_http(api_url, http_method, opts, body)
-      when :basic
+      when :basic, nil
         res = basic_request_over_http(api_url, http_method, opts, body)
       end
 
@@ -149,7 +155,7 @@ module Muddyit
       response = self.send_request(api_url, :post, {}, body.to_json)
       return Muddyit::Collections::Collection::Pages::Page.new(self, response)
     end
-    
+
     protected
 
     # For easier testing. You can mock this method with a XML file you re expecting to receive
@@ -175,6 +181,12 @@ module Muddyit
 
     def basic_request_over_http(path, http_method, opts, data)
 
+      # We only allow access to /extract as an unauthenticated user
+      # all other paths should raise an error
+      if @auth_type == nil && path != '/extract'
+        raise "invalid authentication credentials supplied, are the details correct ?"
+      end
+      
       http_opts = { "Accept" => "application/json", "Content-Type" => "application/json", "User-Agent" => "muddyit_fu" }
       query_string = opts.to_a.map {|x| x.join("=")}.join("&")
 
@@ -196,13 +208,11 @@ module Muddyit
         request.basic_auth @username, @password
         request["Content-Length"] = 0 # Default to 0
       when :get
-        request = Net::HTTP::Get.new(path,headers)
+        path_with_query_string = opts.empty? ? path : "#{path}?#{query_string}"
+        request = Net::HTTP::Get.new(path_with_query_string, headers)
         request.basic_auth @username, @password
       when :delete
         request =  Net::HTTP::Delete.new(path,headers)
-        request.basic_auth @username, @password
-      when :head
-        request = Net::HTTP::Head.new(path,headers)
         request.basic_auth @username, @password
       else
         raise ArgumentError, "Don't know how to handle http_method: :#{http_method.to_s}"
