@@ -10,6 +10,12 @@ require 'forwardable'
 
 require 'pp'
 
+
+# Fix for broken oauth gem
+module OAuth
+  VERSION = "0.4.2"
+end
+
 class Module
   def class_attr_accessor(attribute_name)
     class_eval <<-CODE
