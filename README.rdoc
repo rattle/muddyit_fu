@@ -6,8 +6,6 @@ article.  This gem provides access to the Muddy platform via it's API (see {Mudd
 
 == Installation
 
-  sudo gem install gemcutter
-  sudo gem tumble
   sudo gem install muddyit_fu
 
 == Authentication and authorisation
